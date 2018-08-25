@@ -4,7 +4,7 @@
 
 //TurnGame is  function objects that incorporate whole game contents objects. turngame will run the getInstance function that will intiate the game.
 // Thus, Turngame ()=> getInstance (name)=> initiate(name).
-var TurnGame = function() {
+var TurnGame = (function() {
   var instance;
   var initiate = function(masterName) {
     // Masters and Monsters will later be set as classes
@@ -41,7 +41,7 @@ var TurnGame = function() {
       // Basic UI functions ///////////////////////////////////////////////
       // Note that most of functions are return "this" for continued method chaining.
       getLevel: function () {
-        $("#master-level").html(master.lev + 'lev');
+        $("#master-level").html(master.name+": LV"+master.lev);
         return this;
       },
       getXp: function () {
@@ -73,16 +73,18 @@ var TurnGame = function() {
       toggleMenu: function () {
         $("#master-name").html(master.name);
         $("#start-screen").hide();
-        if ($("#game-menu").style.display === "block") {
-          $("#game-menu").hide();
-          $("#battle-menu").show();
-          $("#battle-input").focus();
-          // https://api.jquery.com/focus
-        } else {
-          $("#game-menu").show();
-          $("#battle-menu").hide();
-          $("#menu-input").focus();
-        }
+        $("#game-menu").toggle();
+        $("#battle-menu").toggle();
+        // if ($("#game-menu").style.display === "block") {
+        //   $("#game-menu").hide();
+        //   $("#battle-menu").show();
+        //   $("#battle-input").focus();
+        //   // https://api.jquery.com/focus
+        // } else {
+        //   $("#game-menu").show();
+        //   $("#battle-menu").hide();
+        //   $("#menu-input").focus();
+        // }
         return this;
       },
 
@@ -102,6 +104,7 @@ var TurnGame = function() {
       },
       menuInput: function(input) {
         if (input === "1") {
+          console.log(input);
           return this.generateMonster();
         } else if (input === "2") {
           hp = maxHp;
@@ -129,6 +132,7 @@ var TurnGame = function() {
         } else if (input === "3") {
           return this.clearMonster().message("Successfully escaped!");
         } else {
+          console.log(input);
           alert("Invalid Input. Please choose among valid options.");
         }
       },
@@ -180,7 +184,7 @@ var TurnGame = function() {
       gameOver: function () {
         $('#screen').html( master.name + "is Dead.. ㅠ.ㅠ ");
         return false;
-      },
+      }
     };
     // end initate return bracket
   };
@@ -195,37 +199,39 @@ var TurnGame = function() {
     }
   };
   // end turnGame function bracket
-}
+})();
 // end turnGame function bracket
 
 
 // Front-end ///////////////////////////////////////
 
 $(document).ready(function() {
-  // $("#game-menu").hide();
-  // $("#battle-menu").hide();
+  $("#game-menu").hide();
+  $("#battle-menu").hide();
 
   $("#start-screen").submit(function (event) {
     event.preventDefault();
     var name = $("#name-input").val();
     if (name && confirm(name + '?')) {
-      TurnGame.getInstance(name).showXp().toggleMenu();
+      TurnGame.getInstance(name).getXp();
+      $("#game-menu").show();
     } else {
       alert('Enter name');
     }
   });
-  $("#menu-button").submit(function(event) {
+  $("#game-menu").submit(function(event) {
     event.preventDefault();
     var menuInputValue = $("#menu-input").val();
-    console.log(menutInputValue);
-    // TurnGame.getInstance().menuInput(menuInputValue);
+    console.log(menuInputValue);
+    TurnGame.getInstance().menuInput(menuInputValue);
     $("#menu-input").val("");
   });
 
-  $("#battle-button").submit(function(event) {
+  $("#battle-menu").submit(function(event) {
     event.preventDefault();
-    var userBattleInput = $("battle-input").val();
+    var userBattleInput = $("#battle-input").val();
+    console.log(userBattleInput);
+    TurnGame.getInstance().battleInput(userBattleInput);
     $("#battle-input").val("");
-    //TurnGame.getInstance().battleInput(userBattleInput);
   });
 });
