@@ -1,0 +1,31 @@
+
+h1 {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+h3 {
+  text-transform: capitalize;
+}
+
+
+button {
+  width: 100px;
+}
+
+button#temp-booter {
+  width: 150px;
+  margin: 50px;
+}
+
+form {
+  margin:50px 30px;
+}
+
+.hidden {
+  display: none;
+}
+/* .col-md-6 {
+  margin: 30px 30px;
+  background-color: rgba(255, 0, 0, 0.3);
+} */
