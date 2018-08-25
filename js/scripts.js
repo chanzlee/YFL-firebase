@@ -65,7 +65,7 @@ var TurnGame = (function() {
         return this;
       },
       getXp: function () {
-        var currentPlayer = this;
+        var passingVar = this;
         if (master.xp > 15 * master.lev) {
           master.xp -= 15 * master.lev;
           master.maxHp += 10;
@@ -73,91 +73,134 @@ var TurnGame = (function() {
           master.att += master.lev;
           master.lev++;
           window.setTimeout(function() {
-            currentPlayer.message('Level UP!');
+            passingVar.message('Level UP!');
           }, 1000);
         }
-        $('#master-xp').html('XP: ' + master.xp + '/' + 15 * master.lev);
-        $('#master-att').html('ATT: ' + master.att);
+        $("#master-xp").html("XP: " + master.xp + "/" + 15 * master.lev);
+        $("#master-att").html("ATT: " + master.att);
         return this.getLevel().getHp();
       },
       getHp: function () {
         if (master.hp < 0) {
           return this.gameOver();
         }
-        $('#master-hp').html('HP: ' + master.hp + '/' + master.maxHp);
+        $("#master-hp").html("HP: " + master.hp + "/" + master.maxHp);
 
         return this;
       },
 
       // No more than toggle() applied to 2 menus. should test just toggle()will work with focus() function.
       toggleMenu: function () {
-        $('#master-name').html(master.name);
-        $('#start-screen').hide();
-        if ($('#game-menu').style.display === 'block') {
-          $('#game-menu').hide();
-          $('#battle-menu').show();
-          $('#battle-input').focus();
+        $("#master-name").html(master.name);
+        $("#start-screen").hide();
+        if ($("#game-menu").style.display === "block") {
+          $("#game-menu").hide();
+          $("#battle-menu").show();
+          $("#battle-input").focus();
           // https://api.jquery.com/focus
         } else {
-          $('#game-menu').show();
-          $('#battle-menu').hide();
-          $('#menu-input').focus();
+          $("#game-menu").show();
+          $("#battle-menu").hide();
+          $("#menu-input").focus();
         }
         return this;
       },
 
       message: function (msg) {
-        $('message').html(msg);
+        $("message").html(msg);
         return this;
       },
 
       // Basic input receiver functions ///////////////////////////////////////////////
       generateMonster: function() {
       monster = monsters[Math.floor(Math.random() * monsters.length)];
-      $('monster-name').html(monster.name);
-      $('monster-hp').html('HP: ' + monster.hp);
-      $('monster-att').html('ATT: ' + monster.att);
+      $("monster-name").html(monster.name);
+      $("monster-hp").html("HP: " + monster.hp);
+      $("monster-att").html("ATT: " + monster.att);
       // this.message("Encountered " + monster.name + "!");
       // return this.toggleMenu();
       },
       menuInput: function(input) {
-        if (input === '1') {
+        if (input === "1") {
           return this.generateMonster();
-        } else if (input === '2') {
+        } else if (input === "2") {
           hp = maxHp;
-          return this.updateStat().message('Recovered full HP...');
-        } else if (input === '3') {
+          return this.updateStat().message("Recovered full HP...");
+        } else if (input === "3") {
           return this.exit();
         } else {
-          alert('Invalid Input. Please choose among valid options.');
+          alert("Invalid Input. Please choose among valid options.");
         }
       },
       exit: function(input) {
-        $('screen').html('"THANK YOU for playing!" -Chan Lee-');
+        $("screen").html('"THANK YOU for playing!" -Chan Lee-');
       },
 
       battleInput: function (input) {
-        if (input === '1') {
+        if (input === "1") {
           return this.attackMonster();
-        } else if (input === '2') {
+        } else if (input === "2") {
           if (master.hp + master.lev * 20 < master.maxHp) {
             master.hp += master.lev * 20;
           } else {
             master.hp = master.maxHp;
           }
-          return this.showHp().message('Recovered HP...').nextTurn();
-        } else if (input === '3') {
-          return this.clearMonster().message('Successfully escaped!');
+          return this.getHp().message("Recovered HP...").nextTurn();
+        } else if (input === "3") {
+          return this.clearMonster().message("Successfully escaped!");
         } else {
-          alert('Invalid Input. Please choose among valid options.');
+          alert("Invalid Input. Please choose among valid options.");
         }
       },
-      // attackMonster: function() {},
-      // attackHero: function() {},
-      // nextTurn: function() {},
-      // win: function() {},
-      // clearMonster: function() {},
-      // gameOver: function() {},
+      attackMonster: function () {
+        monster.hp -= master.att;
+        $("#monster-hp").html( "HP: " + monster.hp);
+        if (monster.hp > 0) {
+          return this.message(monster.name+" got damage of "+master.att".").nextTurn();
+        }
+        return this.win();
+      },
+      attackHero: function () {
+        master.hp -= monster.att;
+        return this.getHp();
+      },
+      // nextTurn: function () {
+      //   var passingVar = this;
+      //   turn = !turn;
+      //   $("#battle-button").prop("disabled") = true;
+      //   if (!turn) {
+      //     window.setTimeout(function () {
+      //       passingVar.message(monster.name + "'s turn.");
+      //       window.setTimeout(function () {
+      //         $('#battle-button').prop("disabled") = false;
+      //         if (passingVar.attackHero()) {
+      //           passingVar.message(master.name+" got damage of "+monster.att+"." );
+      //           window.setTimeout(function () {
+      //             passingVar.message(master.name + "'s turn.");
+      //           }, 1000);
+      //         }
+      //       }, 1000);
+      //     }, 1000);
+      //     return this.nextTurn();
+      //   }
+      //   return this;
+      // },
+      win: function () {
+        this.message(master.name+" gained "+monster.xp+" through the battle.");
+        master.xp += monster.xp;
+        return this.clearMonster().getXp();
+      },
+      clearMonster: function () {
+        monster = null;
+        $("#monster-name").html("");
+        $("#monster-hp").html("");
+        $("#monster-att").html("");
+        return this.toggleMenu();
+      },
+      gameOver: function () {
+        $('#screen').html( master.name + "is Dead.. ㅠ.ㅠ ");
+        return false;
+      },
     };
     // end initate return bracket
   };
