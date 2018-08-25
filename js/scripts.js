@@ -9,7 +9,7 @@ var TurnGame = (function() {
   var initiate = function(masterName) {
     // Masters and Monsters will later be set as classes
     var master = {
-      name: masterName,
+      name: masterName.toUpperCase(),
       lev: 1,
       maxHp: 100,
       hp: 100,
@@ -19,17 +19,17 @@ var TurnGame = (function() {
 
     //Monters is a array of objects.
     var monsters = [{
-      name: 'JL',
+      name: 'JaeBom "Drunken" Lee',
       hp: 25 + master.lev * 3,
       att: 10 + master.lev,
       xp: 10 + master.lev,
     }, {
-      name: 'SB',
+      name: 'SangBaek "Trinity" Shin',
       hp: 50 + master.lev * 5,
       att: 15 + master.lev * 2,
       xp: 20 + master.lev * 2,
     }, {
-      name: 'DG',
+      name: 'Heejay "President" Kim',
       hp: 200 + master.lev * 10,
       att: 25 + master.lev * 5,
       xp: 50 + master.lev * 5,
@@ -41,7 +41,7 @@ var TurnGame = (function() {
       // Basic UI functions ///////////////////////////////////////////////
       // Note that most of functions are return "this" for continued method chaining.
       getLevel: function () {
-        $("#master-level").html(master.name+": LV"+master.lev);
+        $("#master-level").html(" LV: "+master.lev);
         return this;
       },
       getXp: function () {
@@ -100,6 +100,16 @@ var TurnGame = (function() {
       $("#monster-hp").html("HP: " + monster.hp);
       $("#monster-att").html("ATT: " + monster.att);
       this.message("Encountered " + monster.name + "!");
+      if (monster.name === 'JaeBom "Drunken" Lee') {
+        this.message(monster.name + ": Let's have just one more round of drink! @.@");
+      } else if (monster.name === 'SangBaek "Trinity" Shin') {
+        this.message(monster.name + ": Umm... ");
+        this.message(monster.name + ": Let me explain something very important real quick...");
+        this.message(monster.name+ " has set timer for 5 minutes!");
+      } else {
+        this.message(monster.name+ " By construction... You can't beat me!");
+      }
+
       return this.toggleMenu();
       },
       menuInput: function(input) {
@@ -170,6 +180,8 @@ var TurnGame = (function() {
         return this;
       },
       win: function () {
+        this.message(monster.name+" is down!");
+        this.message(master.name+" captured "+monster.name+".");
         this.message(master.name+" gained "+monster.xp+" through the battle.");
         master.xp += monster.xp;
         return this.clearMonster().getXp();
@@ -182,8 +194,9 @@ var TurnGame = (function() {
         return this.toggleMenu();
       },
       gameOver: function () {
-        $('#screen').html( master.name + "is Dead.. ㅠ.ㅠ ");
+        $('#screen').html( master.name + "is Dead.. :( ");
         return false;
+
       }
     };
     // end initate return bracket
@@ -211,10 +224,17 @@ $(document).ready(function() {
 
   $("#start-screen").submit(function (event) {
     event.preventDefault();
+    var reg1 = /\W/gi
+    var reg2 = /ch.+n/gi
     var name = $("#name-input").val();
-    if (name && confirm(name + '?')) {
+    if ( name.match(reg1)){
+      alert("Please use alphabet only.");
+    } else if ( name.match(reg2)){
+      alert("Ha Ha. Funny. You know you can't use that name.");
+    } else if (name && confirm("Hello, "+name +". Welcome to YFL Monster World...")) {
       TurnGame.getInstance(name).getXp();
       $("#game-menu").show();
+    $("#start-screen").hide();
     } else {
       alert('Enter name');
     }
@@ -222,7 +242,6 @@ $(document).ready(function() {
   $("#game-menu").submit(function(event) {
     event.preventDefault();
     var menuInputValue = $("#menu-input").val();
-    console.log(menuInputValue);
     TurnGame.getInstance().menuInput(menuInputValue);
     $("#menu-input").val("");
   });
@@ -230,7 +249,6 @@ $(document).ready(function() {
   $("#battle-menu").submit(function(event) {
     event.preventDefault();
     var userBattleInput = $("#battle-input").val();
-    console.log(userBattleInput);
     TurnGame.getInstance().battleInput(userBattleInput);
     $("#battle-input").val("");
   });
