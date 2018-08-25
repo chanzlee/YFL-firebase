@@ -58,68 +58,67 @@ var TurnGame = (function() {
     var monster = null;
     var turn = true;
     return {
-      return {
-        // Basic UI functions ///////////////////////////////////////////////
-        // Note that most of functions are return "this" for continued method chaining.
-        getLevel: function () {
-          $("#master-level").html(master.lev + 'lev');
-          return this;
-        },
-        getXp: function () {
-          var currentPlayer = this;
-          if (master.xp > 15 * master.lev) {
-            master.xp -= 15 * master.lev;
-            master.maxHp += 10;
-            master.hp = master.maxHp;
-            master.att += master.lev;
-            master.lev++;
-            window.setTimeout(function() {
-              currentPlayer.message('Level UP!');
-            }, 1000);
-          }
-          $('#master-xp').html('XP: ' + master.xp + '/' + 15 * master.lev);
-          $('#master-att').html('ATT: ' + master.att);
-          return this.getLevel().getHp();
-        },
-        getHp: function () {
-          if (master.hp < 0) {
-            return this.gameOver();
-          }
-          $('#master-hp').html('HP: ' + master.hp + '/' + master.maxHp);
+      // Basic UI functions ///////////////////////////////////////////////
+      // Note that most of functions are return "this" for continued method chaining.
+      getLevel: function () {
+        $("#master-level").html(master.lev + 'lev');
+        return this;
+      },
+      getXp: function () {
+        var currentPlayer = this;
+        if (master.xp > 15 * master.lev) {
+          master.xp -= 15 * master.lev;
+          master.maxHp += 10;
+          master.hp = master.maxHp;
+          master.att += master.lev;
+          master.lev++;
+          window.setTimeout(function() {
+            currentPlayer.message('Level UP!');
+          }, 1000);
+        }
+        $('#master-xp').html('XP: ' + master.xp + '/' + 15 * master.lev);
+        $('#master-att').html('ATT: ' + master.att);
+        return this.getLevel().getHp();
+      },
+      getHp: function () {
+        if (master.hp < 0) {
+          return this.gameOver();
+        }
+        $('#master-hp').html('HP: ' + master.hp + '/' + master.maxHp);
 
-          return this;
-        },
+        return this;
+      },
 
-        // No more than toggle() applied to 2 menus. should test just toggle()will work with focus() function.
-        toggleMenu: function () {
-          $('#master-name').html(master.name);
-          $('#start-screen').hide();
-          if ($('#game-menu').style.display === 'block') {
-            $('#game-menu').hide();
-            $('#battle-menu').show();
-            $('#battle-input').focus();
-            // https://api.jquery.com/focus
-          } else {
-            $('#game-menu').show();
-            $('#battle-menu').hide();
-            $('#menu-input').focus();
-          }
-          return this;
-        },
+      // No more than toggle() applied to 2 menus. should test just toggle()will work with focus() function.
+      toggleMenu: function () {
+        $('#master-name').html(master.name);
+        $('#start-screen').hide();
+        if ($('#game-menu').style.display === 'block') {
+          $('#game-menu').hide();
+          $('#battle-menu').show();
+          $('#battle-input').focus();
+          // https://api.jquery.com/focus
+        } else {
+          $('#game-menu').show();
+          $('#battle-menu').hide();
+          $('#menu-input').focus();
+        }
+        return this;
+      },
 
-        message: function (msg) {
-          $('message').html(msg);
-          return this;
-        },
+      message: function (msg) {
+        $('message').html(msg);
+        return this;
+      },
 
-        // Basic input receiver functions ///////////////////////////////////////////////
-        generateMonster: function() {
-        monster = monsters[Math.floor(Math.random() * monsters.length)];
-        $('monster-name').html(monster.name);
-        $('monster-hp').html('HP: ' + monster.hp);
-        $('monster-att').html('ATT: ' + monster.att);
-        // this.message("Encountered " + monster.name + "!");
-        // return this.toggleMenu();
+      // Basic input receiver functions ///////////////////////////////////////////////
+      generateMonster: function() {
+      monster = monsters[Math.floor(Math.random() * monsters.length)];
+      $('monster-name').html(monster.name);
+      $('monster-hp').html('HP: ' + monster.hp);
+      $('monster-att').html('ATT: ' + monster.att);
+      // this.message("Encountered " + monster.name + "!");
+      // return this.toggleMenu();
       },
       menuInput: function(input) {
         if (input === '1') {
@@ -130,14 +129,29 @@ var TurnGame = (function() {
         } else if (input === '3') {
           return this.exit();
         } else {
-          alert('Invalid Input. Please select between valid options.');
+          alert('Invalid Input. Please choose among valid options.');
         }
       },
       exit: function(input) {
         $('screen').html('"THANK YOU for playing!" -Chan Lee-');
       },
 
-      battleInput: function(input) {},
+      battleInput: function (input) {
+        if (input === '1') {
+          return this.attackMonster();
+        } else if (input === '2') {
+          if (master.hp + master.lev * 20 < master.maxHp) {
+            master.hp += master.lev * 20;
+          } else {
+            master.hp = master.maxHp;
+          }
+          return this.showHp().message('Recovered HP...').nextTurn();
+        } else if (input === '3') {
+          return this.clearMonster().message('Successfully escaped!');
+        } else {
+          alert('Invalid Input. Please choose among valid options.');
+        }
+      },
       // attackMonster: function() {},
       // attackHero: function() {},
       // nextTurn: function() {},
