@@ -9,5 +9,5 @@ form {
 }
 
 #game-menu, #battle-menu {
-  display: none;
+  display: block;
 }

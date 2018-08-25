@@ -1,6 +1,8 @@
 // Front-end ///////////////////////////////////////
 
 $(document).ready(function() {
+  $("#game-menu").hide();
+  $("#battle-menu").hide();
   $("#menu-button").submit(function(event) {
     event.preventDefault();
     var menuInputValue = $("#menu-input").val();
@@ -20,7 +22,8 @@ $(document).ready(function() {
 
 //Back-End ///////////////////////////////////////////////
 
-//TurnGame is  function objects that incorporate whole game contents objects. turngame will run the getInstance function that will intiate the game. Thus, name => instance => turngame algo.
+//TurnGame is  function objects that incorporate whole game contents objects. turngame will run the getInstance function that will intiate the game.
+// Thus, Turngame ()=> getInstance (name)=> initiate(name).
 var TurnGame = (function() {
   var instance;
   var initiate = function(masterName) {
@@ -55,11 +58,62 @@ var TurnGame = (function() {
     var monster = null;
     var turn = true;
     return {
+      return {
+        getLevel: function () {
+          $("#master-level").html(master.lev + 'lev');
+          return this;
+        },
+        getXp: function () {
+          var currentPlayer = this;
+          if (master.xp > 15 * master.lev) {
+            master.xp -= 15 * master.lev;
+            master.maxHp += 10;
+            master.hp = master.maxHp;
+            master.att += master.lev;
+            master.lev++;
+            window.setTimeout(function() {
+              currentPlayer.message('Level UP!');
+            }, 1000);
+          }
+          $('#master-xp').html('XP: ' + master.xp + '/' + 15 * master.lev);
+          $('#master-att').html('ATT: ' + master.att);
+          return this.getLevel().getHp();
+        },
+        getHp: function () {
+          if (master.hp < 0) {
+            return this.gameOver();
+          }
+          $('#master-hp').html('HP: ' + master.hp + '/' + master.maxHp);
 
+          return this;
+        },
+
+        // No more than toggle() applied to 2 menus. should test just toggle()will work with focus() function.
+        toggleMenu: function () {
+          $('#master-name').html(master.name);
+          $('#start-screen').hide();
+          if ($('#game-menu').style.display === 'block') {
+            $('#game-menu').hide();
+            $('#battle-menu').show();
+            $('#battle-input').focus();
+            // https://api.jquery.com/focus
+          } else {
+            $('#game-menu').show();
+            $('#battle-menu').hide();
+            $('#menu-input').focus();
+          }
+          return this;
+        },
+
+        message: function (msg) {
+          $('message').html(msg);
+          return this;
+        },
     };
     // end initate return bracket
   };
   // end initiate function bracket
+  
   return {
     getInstance: function(name) {
       if (!instance) {
