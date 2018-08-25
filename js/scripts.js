@@ -59,6 +59,8 @@ var TurnGame = (function() {
     var turn = true;
     return {
       return {
+        // Basic UI functions ///////////////////////////////////////////////
+        // Note that most of functions are return "this" for continued method chaining.
         getLevel: function () {
           $("#master-level").html(master.lev + 'lev');
           return this;
@@ -109,11 +111,44 @@ var TurnGame = (function() {
           $('message').html(msg);
           return this;
         },
+
+        // Basic input receiver functions ///////////////////////////////////////////////
+        generateMonster: function() {
+        monster = monsters[Math.floor(Math.random() * monsters.length)];
+        $('monster-name').html(monster.name);
+        $('monster-hp').html('HP: ' + monster.hp);
+        $('monster-att').html('ATT: ' + monster.att);
+        // this.message("Encountered " + monster.name + "!");
+        // return this.toggleMenu();
+      },
+      menuInput: function(input) {
+        if (input === '1') {
+          return this.generateMonster();
+        } else if (input === '2') {
+          hp = maxHp;
+          return this.updateStat().message('Recovered full HP...');
+        } else if (input === '3') {
+          return this.exit();
+        } else {
+          alert('Invalid Input. Please select between valid options.');
+        }
+      },
+      exit: function(input) {
+        $('screen').html('"THANK YOU for playing!" -Chan Lee-');
+      },
+
+      battleInput: function(input) {},
+      // attackMonster: function() {},
+      // attackHero: function() {},
+      // nextTurn: function() {},
+      // win: function() {},
+      // clearMonster: function() {},
+      // gameOver: function() {},
     };
     // end initate return bracket
   };
   // end initiate function bracket
-  
+
   return {
     getInstance: function(name) {
       if (!instance) {
