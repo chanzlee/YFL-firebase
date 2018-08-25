@@ -4,28 +4,10 @@ h1 {
   padding-bottom: 50px;
 }
 
-h3 {
-  text-transform: capitalize;
-}
-
-
-button {
-  width: 100px;
-}
-
-button#temp-booter {
-  width: 150px;
-  margin: 50px;
-}
-
 form {
   margin:50px 30px;
 }
 
-.hidden {
+#game-menu, #battle-menu {
   display: none;
 }
-/* .col-md-6 {
-  margin: 30px 30px;
-  background-color: rgba(255, 0, 0, 0.3);
-} */

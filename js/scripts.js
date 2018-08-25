@@ -1,7 +1,6 @@
 // Front-end ///////////////////////////////////////
 
-$(document).ready(funciton(){
-
+$(document).ready(function() {
   $("#menu-button").submit(function(event) {
     event.preventDefault();
     var menuInputValue = $("#menu-input").val();
