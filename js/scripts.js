@@ -1,30 +1,10 @@
-// Front-end ///////////////////////////////////////
-
-$(document).ready(function() {
-  $("#game-menu").hide();
-  $("#battle-menu").hide();
-  $("#menu-button").submit(function(event) {
-    event.preventDefault();
-    var menuInputValue = $("#menu-input").val();
-    console.log(menutInputValue);
-    // TurnGame.getInstance().menuInput(menuInputValue);
-    $("#menu-input").val("");
-  });
-
-  $("#battle-button").submit(function(event) {
-    event.preventDefault();
-    var userBattleInput = $("battle-input").val();
-    $("battle-input").val("");
-    //TurnGame.getInstance().battleInput(userBattleInput);
-  });
-});
 
 
 //Back-End ///////////////////////////////////////////////
 
 //TurnGame is  function objects that incorporate whole game contents objects. turngame will run the getInstance function that will intiate the game.
 // Thus, Turngame ()=> getInstance (name)=> initiate(name).
-var TurnGame = (function() {
+var TurnGame = function() {
   var instance;
   var initiate = function(masterName) {
     // Masters and Monsters will later be set as classes
@@ -107,18 +87,18 @@ var TurnGame = (function() {
       },
 
       message: function (msg) {
-        $("message").html(msg);
+        $("#message").html(msg);
         return this;
       },
 
       // Basic input receiver functions ///////////////////////////////////////////////
       generateMonster: function() {
       monster = monsters[Math.floor(Math.random() * monsters.length)];
-      $("monster-name").html(monster.name);
-      $("monster-hp").html("HP: " + monster.hp);
-      $("monster-att").html("ATT: " + monster.att);
-      // this.message("Encountered " + monster.name + "!");
-      // return this.toggleMenu();
+      $("#monster-name").html(monster.name);
+      $("#monster-hp").html("HP: " + monster.hp);
+      $("#monster-att").html("ATT: " + monster.att);
+      this.message("Encountered " + monster.name + "!");
+      return this.toggleMenu();
       },
       menuInput: function(input) {
         if (input === "1") {
@@ -133,7 +113,7 @@ var TurnGame = (function() {
         }
       },
       exit: function(input) {
-        $("screen").html('"THANK YOU for playing!" -Chan Lee-');
+        $("#screen").html('"THANK YOU for playing!" -Chan Lee-');
       },
 
       battleInput: function (input) {
@@ -156,7 +136,7 @@ var TurnGame = (function() {
         monster.hp -= master.att;
         $("#monster-hp").html( "HP: " + monster.hp);
         if (monster.hp > 0) {
-          return this.message(monster.name+" got damage of "+master.att".").nextTurn();
+          return this.message(monster.name+" got damage of "+master.att+".").nextTurn();
         }
         return this.win();
       },
@@ -164,27 +144,27 @@ var TurnGame = (function() {
         master.hp -= monster.att;
         return this.getHp();
       },
-      // nextTurn: function () {
-      //   var passingVar = this;
-      //   turn = !turn;
-      //   $("#battle-button").prop("disabled") = true;
-      //   if (!turn) {
-      //     window.setTimeout(function () {
-      //       passingVar.message(monster.name + "'s turn.");
-      //       window.setTimeout(function () {
-      //         $('#battle-button').prop("disabled") = false;
-      //         if (passingVar.attackHero()) {
-      //           passingVar.message(master.name+" got damage of "+monster.att+"." );
-      //           window.setTimeout(function () {
-      //             passingVar.message(master.name + "'s turn.");
-      //           }, 1000);
-      //         }
-      //       }, 1000);
-      //     }, 1000);
-      //     return this.nextTurn();
-      //   }
-      //   return this;
-      // },
+      nextTurn: function () {
+        var passingVar = this;
+        turn = !turn;
+        $("#battle-button").prop("disabled") = true;
+        if (!turn) {
+          window.setTimeout(function () {
+            passingVar.message(monster.name + "'s turn.");
+            window.setTimeout(function () {
+              $('#battle-button').prop("disabled") = false;
+              if (passingVar.attackHero()) {
+                passingVar.message(master.name+" got damage of "+monster.att+"." );
+                window.setTimeout(function () {
+                  passingVar.message(master.name + "'s turn.");
+                }, 1000);
+              }
+            }, 1000);
+          }, 1000);
+          return this.nextTurn();
+        }
+        return this;
+      },
       win: function () {
         this.message(master.name+" gained "+monster.xp+" through the battle.");
         master.xp += monster.xp;
@@ -215,5 +195,37 @@ var TurnGame = (function() {
     }
   };
   // end turnGame function bracket
-})();
+}
 // end turnGame function bracket
+
+
+// Front-end ///////////////////////////////////////
+
+$(document).ready(function() {
+  // $("#game-menu").hide();
+  // $("#battle-menu").hide();
+
+  $("#start-screen").submit(function (event) {
+    event.preventDefault();
+    var name = $("#name-input").val();
+    if (name && confirm(name + '?')) {
+      TurnGame.getInstance(name).showXp().toggleMenu();
+    } else {
+      alert('Enter name');
+    }
+  });
+  $("#menu-button").submit(function(event) {
+    event.preventDefault();
+    var menuInputValue = $("#menu-input").val();
+    console.log(menutInputValue);
+    // TurnGame.getInstance().menuInput(menuInputValue);
+    $("#menu-input").val("");
+  });
+
+  $("#battle-button").submit(function(event) {
+    event.preventDefault();
+    var userBattleInput = $("battle-input").val();
+    $("#battle-input").val("");
+    //TurnGame.getInstance().battleInput(userBattleInput);
+  });
+});
