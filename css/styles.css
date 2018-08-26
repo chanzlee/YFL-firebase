@@ -11,3 +11,9 @@ form {
 #game-menu, #battle-menu {
   display: block;
 }
+
+#screent {
+  border-radius: 10px;
+  border: 2px solid black;
+  padding: 5px;
+}

@@ -7,9 +7,10 @@
 var TurnGame = (function() {
   var instance;
   var initiate = function(masterName) {
+    masterName = masterName.toUpperCase();
     // Masters and Monsters will later be set as classes
     var master = {
-      name: masterName.toUpperCase(),
+      name: masterName,
       lev: 1,
       maxHp: 100,
       hp: 100,
@@ -23,16 +24,24 @@ var TurnGame = (function() {
       hp: 25 + master.lev * 3,
       att: 10 + master.lev,
       xp: 10 + master.lev,
+      init: "",
+      skill: '"Soju-Slam"!',
+
     }, {
       name: 'SangBaek "Trinity" Shin',
       hp: 50 + master.lev * 5,
       att: 15 + master.lev * 2,
       xp: 20 + master.lev * 2,
+      init: "",
+      skill: '"Explaining-Bullshit"!',
+
     }, {
       name: 'Heejay "President" Kim',
-      hp: 200 + master.lev * 10,
+      hp: 100 + master.lev * 10,
       att: 25 + master.lev * 5,
       xp: 50 + master.lev * 5,
+      init: "",
+      skill: '"Nomura-Beam"!',
     }];
 
     var monster = null;
@@ -43,6 +52,7 @@ var TurnGame = (function() {
       getLevel: function () {
         $("#master-level").html(" LV: "+master.lev);
         return this;
+        $("*").fadeOut().fadeIn('slow');
       },
       getXp: function () {
         var passingVar = this;
@@ -86,6 +96,7 @@ var TurnGame = (function() {
         //   $("#menu-input").focus();
         // }
         return this;
+        $("*").fadeOut().fadeIn('slow');
       },
 
       message: function (msg) {
@@ -95,26 +106,30 @@ var TurnGame = (function() {
 
       // Basic input receiver functions ///////////////////////////////////////////////
       generateMonster: function() {
+        var passingVar = this;
       monster = monsters[Math.floor(Math.random() * monsters.length)];
-      $("#monster-name").html(monster.name);
-      $("#monster-hp").html("HP: " + monster.hp);
-      $("#monster-att").html("ATT: " + monster.att);
-      this.message("Encountered " + monster.name + "!");
-      if (monster.name === 'JaeBom "Drunken" Lee') {
-        this.message(monster.name + ": Let's have just one more round of drink! @.@");
-      } else if (monster.name === 'SangBaek "Trinity" Shin') {
-        this.message(monster.name + ": Umm... ");
-        this.message(monster.name + ": Let me explain something very important real quick...");
-        this.message(monster.name+ " has set timer for 5 minutes!");
-      } else {
-        this.message(monster.name+ " By construction... You can't beat me!");
-      }
+        $("#monster-name").html(monster.name);
+        $("#monster-hp").html("HP: " + monster.hp);
+        $("#monster-att").html("ATT: " + monster.att);
+        this.message("Encountered " + monster.name + "!");
+        $("#screen").animate({right: "50px"}, "faster");
+        $("#screen").animate({left: "50px"}, "faster");
+        $("#screen").animate({right: "50px"}, "faster");
+        $("#screen").animate({left: "50px"}, "faster");
 
-      return this.toggleMenu();
+          window.setTimeout(function (){
+            if (monster.name === 'JaeBom "Drunken" Lee') {
+              passingVar.message(monster.name + ": Let's have just one more round of drink! @.@");
+            } else if (monster.name === 'SangBaek "Trinity" Shin') {
+              passingVar.message(monster.name + ": Umm... Let me explain something real quick...");
+            } else {
+              passingVar.message(monster.name+ ": By construction... You can't beat me!");
+            }
+            return passingVar.toggleMenu();
+          }, 4000);
       },
       menuInput: function(input) {
         if (input === "1") {
-          console.log(input);
           return this.generateMonster();
         } else if (input === "2") {
           hp = maxHp;
@@ -127,6 +142,7 @@ var TurnGame = (function() {
       },
       exit: function(input) {
         $("#screen").html('"THANK YOU for playing!" -Chan Lee-');
+        $("*").fadeOut(5000);
       },
 
       battleInput: function (input) {
@@ -158,33 +174,44 @@ var TurnGame = (function() {
         master.hp -= monster.att;
         return this.getHp();
       },
+      //nextTurn is recursive function and process the passed variable until turn is over.
       nextTurn: function () {
         var passingVar = this;
         turn = !turn;
-        $("#battle-button").prop("disabled") = true;
+        $("#battle-button").prop("disabled",true);
         if (!turn) {
           window.setTimeout(function () {
             passingVar.message(monster.name + "'s turn.");
+            $('#battle-button').prop("disabled",false);
             window.setTimeout(function () {
-              $('#battle-button').prop("disabled") = false;
               if (passingVar.attackHero()) {
-                passingVar.message(master.name+" got damage of "+monster.att+"." );
+                passingVar.message(monster.name+" used "+monster.skill);
                 window.setTimeout(function () {
-                  passingVar.message(master.name + "'s turn.");
-                }, 1000);
+                    passingVar.message(master.name+" got damage of "+monster.att+"." );
+                  window.setTimeout(function () {
+                    passingVar.message(master.name + "'s turn.");
+                  }, 2000);
+                }, 2000);
               }
-            }, 1000);
-          }, 1000);
+            }, 2000);
+          }, 2000);
           return this.nextTurn();
         }
         return this;
       },
       win: function () {
-        this.message(monster.name+" is down!");
-        this.message(master.name+" captured "+monster.name+".");
-        this.message(master.name+" gained "+monster.xp+" through the battle.");
-        master.xp += monster.xp;
-        return this.clearMonster().getXp();
+        var passingVar = this;
+        window.setTimeout(function () {
+          passingVar.message(monster.name+" is down!");
+          window.setTimeout(function () {
+            passingVar.message("sibal...");
+            window.setTimeout(function () {
+              passingVar.message(master.name+" gained "+monster.xp+" through the battle.");
+            }, 2000);
+          }, 2000);
+          master.xp += monster.xp;
+          return this.clearMonster().getXp();
+        }, 2000);
       },
       clearMonster: function () {
         monster = null;
