@@ -149,7 +149,7 @@ var TurnGame = (function() {
           $('#menu-button').prop("disabled",true);
         } else if (input === "2") {
           master.hp = master.maxHp;
-          return this.updateStat().message("Recovered full HP...");
+          return this.getHp().message("Recovered full HP...");
         } else if (input === "3") {
           return this.exit();
         } else {
