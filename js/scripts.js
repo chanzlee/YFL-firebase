@@ -7,6 +7,7 @@
 var TurnGame = (function() {
   var instance;
   var initiate = function(masterName) {
+    var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4")];
     masterName = masterName.toUpperCase();
     // Masters and Monsters will later be set as classes
     var master = {
@@ -20,28 +21,41 @@ var TurnGame = (function() {
 
     //Monters is a array of objects.
     var monsters = [{
+      id: 0,
+      name: 'ReeRee "SongPa-Seal" Kim',
+      nick: 'ReeRee',
+      hp: 15 + master.lev * 10,
+      att: 1 + master.lev * 5,
+      xp: 5 + master.lev * 5,
+      skill: '"Hydro-Pump"!',
+    }, {
+
+      id: 1,
       name: 'JaeBom "Drunken" Lee',
+      nick: "JaeBom",
       hp: 25 + master.lev * 3,
       att: 10 + master.lev,
       xp: 10 + master.lev,
-      init: "",
       skill: '"Soju-Slam"!',
 
     }, {
+      id: 2,
       name: 'SangBaek "Trinity" Shin',
+      nick: "SangBaek",
       hp: 50 + master.lev * 5,
       att: 15 + master.lev * 2,
       xp: 20 + master.lev * 2,
-      init: "",
       skill: '"Explaining-Bullshit"!',
 
     }, {
+      id: 3,
       name: 'Heejay "President" Kim',
+      nick: "Heejay",
       hp: 100 + master.lev * 10,
       att: 25 + master.lev * 5,
       xp: 50 + master.lev * 5,
-      init: "",
       skill: '"Nomura-Beam"!',
+
     }];
 
     var monster = null;
@@ -66,6 +80,7 @@ var TurnGame = (function() {
             passingVar.message('Level UP!');
           }, 1000);
         }
+        $("#master-name").html(master.name);
         $("#master-xp").html("XP: " + master.xp + "/" + 15 * master.lev);
         $("#master-att").html("ATT: " + master.att);
         return this.getLevel().getHp();
@@ -84,7 +99,7 @@ var TurnGame = (function() {
         $("#master-name").html(master.name);
         $("#start-screen").hide();
         $("#game-menu").toggle();
-        $("#battle-menu").toggle();
+        $("#battle-menu").fadeToggle();
         // if ($("#game-menu").style.display === "block") {
         //   $("#game-menu").hide();
         //   $("#battle-menu").show();
@@ -96,43 +111,44 @@ var TurnGame = (function() {
         //   $("#menu-input").focus();
         // }
         return this;
-        $("*").fadeOut().fadeIn('slow');
+        $("*").fadeOut();
       },
 
       message: function (msg) {
+        $("#message").hide();
         $("#message").html(msg);
+        $("#message").fadeIn();
         return this;
       },
 
       // Basic input receiver functions ///////////////////////////////////////////////
       generateMonster: function() {
         var passingVar = this;
-      monster = monsters[Math.floor(Math.random() * monsters.length)];
-        $("#monster-name").html(monster.name);
-        $("#monster-hp").html("HP: " + monster.hp);
-        $("#monster-att").html("ATT: " + monster.att);
+        monster = monsters[Math.floor(Math.random() * monsters.length)];
+        $("#monster-name").html(monster.name+" ");
+        $("#monster-hp").html(" HP:" + monster.hp+" ");
+        $("#monster-att").html(" ATT:" + monster.att+" ");
         this.message("Encountered " + monster.name + "!");
-        $("#screen").animate({right: "50px"}, "faster");
-        $("#screen").animate({left: "50px"}, "faster");
-        $("#screen").animate({right: "50px"}, "faster");
-        $("#screen").animate({left: "50px"}, "faster");
-
-          window.setTimeout(function (){
-            if (monster.name === 'JaeBom "Drunken" Lee') {
-              passingVar.message(monster.name + ": Let's have just one more round of drink! @.@");
-            } else if (monster.name === 'SangBaek "Trinity" Shin') {
-              passingVar.message(monster.name + ": Umm... Let me explain something real quick...");
-            } else {
-              passingVar.message(monster.name+ ": By construction... You can't beat me!");
-            }
-            return passingVar.toggleMenu();
-          }, 4000);
+        imgArray[monster.id].slideToggle();
+        window.setTimeout(function (){
+          if (monster.name === 'JaeBom "Drunken" Lee') {
+            passingVar.message(monster.nick + ": Let's have just one more round of drink! @.@");
+          } else if (monster.name === 'SangBaek "Trinity" Shin') {
+            passingVar.message(monster.nick + ": Umm... Let me explain something real quick...");
+          } else if (monster.name === 'Heejay "President" Kim'){
+            passingVar.message(monster.nick+ ": By construction... You can't beat me!");
+          } else {
+            passingVar.message(monster.nick+"'s status: Another day of blue sky...");
+          }
+          return passingVar.toggleMenu();
+        }, 3500);
       },
       menuInput: function(input) {
         if (input === "1") {
           return this.generateMonster();
+          $('#menu-button').prop("disabled",true);
         } else if (input === "2") {
-          hp = maxHp;
+          master.hp = master.maxHp;
           return this.updateStat().message("Recovered full HP...");
         } else if (input === "3") {
           return this.exit();
@@ -141,7 +157,7 @@ var TurnGame = (function() {
         }
       },
       exit: function(input) {
-        $("#screen").html('"THANK YOU for playing!" -Chan Lee-');
+        $("#message").html('"THANK YOU for playing!" -Chan Lee-');
         $("*").fadeOut(5000);
       },
 
@@ -158,7 +174,6 @@ var TurnGame = (function() {
         } else if (input === "3") {
           return this.clearMonster().message("Successfully escaped!");
         } else {
-          console.log(input);
           alert("Invalid Input. Please choose among valid options.");
         }
       },
@@ -166,7 +181,12 @@ var TurnGame = (function() {
         monster.hp -= master.att;
         $("#monster-hp").html( "HP: " + monster.hp);
         if (monster.hp > 0) {
-          return this.message(monster.name+" got damage of "+master.att+".").nextTurn();
+          imgArray[monster.id].shake({
+              interval: 100,
+              distance: 20,
+              times: 5
+          });
+          return this.message(monster.nick+" got damage of "+master.att+".").nextTurn();
         }
         return this.win();
       },
@@ -181,15 +201,16 @@ var TurnGame = (function() {
         $("#battle-button").prop("disabled",true);
         if (!turn) {
           window.setTimeout(function () {
-            passingVar.message(monster.name + "'s turn.");
-            $('#battle-button').prop("disabled",false);
+            passingVar.message(monster.nick + "'s turn.");
             window.setTimeout(function () {
               if (passingVar.attackHero()) {
-                passingVar.message(monster.name+" used "+monster.skill);
+                passingVar.message(monster.nick+" used "+monster.skill);
                 window.setTimeout(function () {
+                    flashOut();
                     passingVar.message(master.name+" got damage of "+monster.att+"." );
                   window.setTimeout(function () {
                     passingVar.message(master.name + "'s turn.");
+                    $('#battle-button').prop("disabled",false);
                   }, 2000);
                 }, 2000);
               }
@@ -202,28 +223,32 @@ var TurnGame = (function() {
       win: function () {
         var passingVar = this;
         window.setTimeout(function () {
-          passingVar.message(monster.name+" is down!");
+          passingVar.message(monster.nick+" is down!");
           window.setTimeout(function () {
-            passingVar.message("sibal...");
             window.setTimeout(function () {
-              passingVar.message(master.name+" gained "+monster.xp+" through the battle.");
+              passingVar.message(master.name+" gained "+monster.xp+"xp through the battle.");
             }, 2000);
           }, 2000);
           master.xp += monster.xp;
-          return this.clearMonster().getXp();
-        }, 2000);
+          return passingVar.clearMonster().getXp();
+        }, 1500);
       },
       clearMonster: function () {
-        monster = null;
         $("#monster-name").html("");
         $("#monster-hp").html("");
         $("#monster-att").html("");
+        imgArray[monster.id].slideToggle();
+        $('#menu-button').prop("disabled",false);
         return this.toggleMenu();
+        monster = {};
       },
       gameOver: function () {
-        $('#screen').html( master.name + "is Dead.. :( ");
+        $("#screen").html("DEAD");
+        $('#message').html( master.name + " is Dead... ");
+        window.setTimeout(function(){
+          $('#message').html("<h1>Game Over</h1>");
+        }, 2000);
         return false;
-
       }
     };
     // end initate return bracket
@@ -243,6 +268,44 @@ var TurnGame = (function() {
 // end turnGame function bracket
 
 
+// Img animate functions
+//shake when monsters are attacked
+(function($){
+  $.fn.shake = function(settings) {
+    if(typeof settings.interval == 'undefined'){
+        settings.interval = 100;
+    }
+    if(typeof settings.distance == 'undefined'){
+        settings.distance = 10;
+    }
+    if(typeof settings.times == 'undefined'){
+        settings.times = 4;
+    }
+    if(typeof settings.complete == 'undefined'){
+        settings.complete = function(){};
+    }
+    $(this).css('position','relative');
+    for(var iter=0; iter<(settings.times+1); iter++){
+        $(this).animate({ left:((iter%2 == 0 ? settings.distance : settings.distance * -1)) }, settings.interval);
+    }
+    $(this).animate({ left: 0}, settings.interval, settings.complete);
+  };
+})(jQuery);
+
+//flashout and in when master is attacked
+var flashOut = function(){
+  $("#battle-menu").fadeOut();
+  $("#screen").fadeOut();
+  $("#monster-stat").fadeOut();
+  $("#message").fadeOut();
+  $("#battle-menu").fadeIn('slow');
+  $("#screen").fadeIn('slow');
+  $("#monster-stat").fadeIn('slow');
+  $("#message").fadeIn('slow');
+}
+
+
+
 // Front-end ///////////////////////////////////////
 
 $(document).ready(function() {
@@ -258,10 +321,11 @@ $(document).ready(function() {
       alert("Please use alphabet only.");
     } else if ( name.match(reg2)){
       alert("Ha Ha. Funny. You know you can't use that name.");
-    } else if (name && confirm("Hello, "+name +". Welcome to YFL Monster World...")) {
+    } else if (name && confirm("Hello, "+name.toUpperCase() +". Welcome to YFL ULTI BATTLE...")) {
       TurnGame.getInstance(name).getXp();
       $("#game-menu").show();
-    $("#start-screen").hide();
+      $(".jumbotron").hide();
+      $("#start-screen").hide();
     } else {
       alert('Enter name');
     }

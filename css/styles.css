@@ -1,5 +1,42 @@
+body {
+  font-family: 'Press Start 2P', arial;
+  font-size: 7px;
+}
+form {
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.container {
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+.jumbotron {
+  font-size: 1rem;
+  background-image: url("../img/yfl.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity:0.9;
+
+  z-index: -1;
+  min-width: 200px;
+  min-height: auto;
+  width: 100%;
+  height: auto;
+  padding: 80px 0;
+
+  text-align: center;
+}
+.row {
+  margin-left: 0;
+}
+.foe {
+  padding: 3px;
+  text-align: center;
+}
 
 h1 {
+  color: white;
   padding-top: 50px;
   padding-bottom: 50px;
 }
@@ -12,8 +49,20 @@ form {
   display: block;
 }
 
-#screent {
-  border-radius: 10px;
-  border: 2px solid black;
+#monster-stat {
+  float:right;
+}
+
+#message {
+  margin-top: 50px;
   padding: 5px;
+}
+
+img {
+  margin-left: 30%;
+  margin-right: 30%;
+  display: none;
+  width: 75px;
+  height:100px;
+  margin-bottom: 3%;
 }
