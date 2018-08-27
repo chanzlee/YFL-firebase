@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet">
+    <link href="css/styles.css" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&amp;subset=latin-ext" rel="stylesheet">
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/scripts.js"></script>
+    <title>YFL</title>
+  </head>
+  <body>
+    <div class="container">
+      <button id="music-off" type="click">Sound off</button>
+      <div class="jumbotron">
+        <h1 class="glow">YFL ULTIMATE BATTLE</h1>
+      </div>
+      <div id="update">
+        <p>Update v-1.0.1:</p>
+        <p>BGM enabled. You can play the background music by start typing name. To block BGM, use button on the top. (yet, have to be refreshed to turn on.)</p>
+      </div>
+      <form id="start-screen" class="form-group">
+        <label for="name-input">
+          <input class="form-control" id="name-input" placeholder="Enter name here">
+        </label>
+        <button type="submit" class="btn blink btn-secondary" id="start">Start Game</button>
+      </form>
+      <div class="row" id="screen">
+        <div id="master-stat">
+          <span id="master-name"></span>
+          <span id="master-level"></span>
+          <span id="master-hp"></span>
+          <span id="master-xp"></span>
+          <span id="master-att"></span>
+        </div>
+      </div>
+      <div class="row">
+        <form id="game-menu">
+          <div id="menu-1">1.Adventure</div>
+          <div id="menu-2">2.Rest</div>
+          <div id="menu-3">3.End Game</div>
+          <input id="menu-input" />
+          <button type="submit" id="menu-button">Enter</button>
+        </form>
+        <form id="battle-menu">
+          <div id="battle-1">1.Spank</div>
+          <div id="battle-2">2.Recover</div>
+          <div id="battle-3">3.Espcape</div>
+          <input id="battle-input" />
+          <button type="submit" id="battle-button">Enter</button>
+        </form>
+      </div>
+        <div class="row">
+          <div id="monster-stat">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-2 foe">
+              <div class="row">
+                <img id="img-1" src="img/rr.png">
+                <img id="img-2" src="img/jb.png">
+                <img id="img-3" src="img/sb.jpg">
+                <img id="img-4" src="img/hj.jpeg">
+              </div>
+              <div class="row">
+                <span id="monster-name"></span>
+              </div>
+              <div class="row">
+                <span id="monster-hp"></span>
+              </div>
+              <div class="row">
+                <span id="monster-att"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="message"></div>
+    </div>
+  </body>
+</html>

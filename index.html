@@ -1,78 +1,64 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="css/bootstrap.css" type="text/css" rel="stylesheet">
-    <link href="css/styles.css" type="text/css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&amp;subset=latin-ext" rel="stylesheet">
-    <script src="js/jquery-3.3.1.js"></script>
-    <script src="js/scripts.js"></script>
+    <meta charset="utf-8">
     <title>YFL</title>
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet">
+    <link href="css/login.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/login.js"></script>
   </head>
-  <body>
-    <div class="container">
-      <button id="music-off" type="click">Sound off</button>
-      <div class="jumbotron">
-        <h1 class="glow">YFL ULTIMATE BATTLE</h1>
-      </div>
-      <div id="update">
-        <p>Update v-1.0.1:</p>
-        <p>BGM enabled. You can play the background music by start typing name. To block BGM, use button on the top. (yet, have to be refreshed to turn on.)</p>
-      </div>
-      <form id="start-screen" class="form-group">
-        <label for="name-input">
-          <input class="form-control" id="name-input" placeholder="Enter name here">
-        </label>
-        <button type="submit" class="btn blink btn-secondary" id="start">Start Game</button>
-      </form>
-      <div class="row" id="screen">
-        <div id="master-stat">
-          <span id="master-name"></span>
-          <span id="master-level"></span>
-          <span id="master-hp"></span>
-          <span id="master-xp"></span>
-          <span id="master-att"></span>
+  <body id="login" bgcolor="#FFFFFF">
+
+    <form id="ssoLoginForm" name="ssoLoginForm" method="post" action="/sso/PmSSOAuthService" onsubmit="return false;">
+      <input type="hidden" id="app_id" name="app_id" value="nportalYonsei">
+      <input type="hidden" id="retUrl" name="retUrl" value="http://portal.yonsei.ac.kr/main">
+      <input type="hidden" id="failUrl" name="failUrl" value="http://portal.yonsei.ac.kr/main">
+      <input type="hidden" id="baseUrl" name="baseUrl" value="http://portal.yonsei.ac.kr">
+      <input type="hidden" id="loginUrl" name="loginUrl" value="https://portal.yonsei.ac.kr/main/index.jsp">
+      <input type="hidden" id="loginType" name="loginType" value="invokeID">
+      <input type="hidden" id="E2" name="E2" value="">
+
+
+      <input type="hidden" id="ssoGubun" name="ssoGubun" value="Login">
+
+      <input type="hidden" id="refererUrl" name="refererUrl" value="https://portal.yonsei.ac.kr/main/">
+
+      <input type="hidden" id="test" name="test" value="SSOLogin">
+
+      <input type="hidden" id="loginProcUrl" name="loginProcUrl" value="/main/index.jsp">
+
+
+      <div id="wrap">
+        <div id="container">
+          <h1><img src="img/logo.png" alt="YFL"></h1>
+
+          <fieldset>
+
+            <legend>로그인</legend>
+            <label for="loginPasswd">Password:</label>
+              <div class="inputWrap">
+                <input type="password" id="loginPasswd" name="loginPasswd" title="비밀번호" placeholder="맥도날드?">
+              </div>
+            <div id="info" class="error">
+              <p class="error1" style="display:block;">원하는 서비스를 이용하시려면 로그인이 필요합니다.<br>Login is required for the service you want.</p>
+            </div>
+
+            <button id="fake" type="submit" class="submit" style="cursor: pointer;">로그인(Login)</button>
+            <div class="linkWrap">
+              <a href="#">아이디(학번) 찾기</a>
+              <a href="#"><span></span>임시비밀번호발급</a>
+              <a href="https://underwood1.yonsei.ac.kr/haksa/HELP/dugrock-01.htm" target="_blank" class="ty3"><span></span>도움말<span class="q"></span></a>
+            </div>
+            <p><span></span>이용 후 반드시 로그아웃 해주세요!<br>&nbsp;&nbsp;Please be sure to log out after use.</p><br>
+
+            <div class="error">
+              <p class="error1" style="display:block;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</p>
+            </div>
+
+          </fieldset>
         </div>
       </div>
-      <div class="row">
-        <form id="game-menu">
-          <div id="menu-1">1.Adventure</div>
-          <div id="menu-2">2.Rest</div>
-          <div id="menu-3">3.End Game</div>
-          <input id="menu-input" />
-          <button type="submit" id="menu-button">Enter</button>
-        </form>
-        <form id="battle-menu">
-          <div id="battle-1">1.Spank</div>
-          <div id="battle-2">2.Recover</div>
-          <div id="battle-3">3.Espcape</div>
-          <input id="battle-input" />
-          <button type="submit" id="battle-button">Enter</button>
-        </form>
-      </div>
-        <div class="row">
-          <div id="monster-stat">
-            <div class="col-xs-2">
-            </div>
-            <div class="col-xs-2 foe">
-              <div class="row">
-                <img id="img-1" src="img/rr.png">
-                <img id="img-2" src="img/jb.png">
-                <img id="img-3" src="img/sb.jpg">
-                <img id="img-4" src="img/hj.jpeg">
-              </div>
-              <div class="row">
-                <span id="monster-name"></span>
-              </div>
-              <div class="row">
-                <span id="monster-hp"></span>
-              </div>
-              <div class="row">
-                <span id="monster-att"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" id="message"></div>
-    </div>
+    </form>
   </body>
 </html>
