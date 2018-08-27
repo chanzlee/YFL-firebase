@@ -11,6 +11,27 @@ form {
   border-radius: 10px;
   border: 1px solid black;
 }
+.blink {
+  animation: blinker 1s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+.glow {
+  -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+  -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+  animation: neon1 1.5s ease-in-out infinite alternate;
+}
+@keyframes neon1 {
+  from {
+    text-shadow: 0 0 10px #000, 0 0 20px #000, 0 0 30px #000, 0 0 40px #000, 0 0 70px #000, 0 0 80px #000, 0 0 100px #000, 0 0 150px #000;
+  }
+  to {
+    text-shadow: 0 0 5px #222, 0 0 10px #222, 0 0 15px #222, 0 0 20px #222, 0 0 35px #222, 0 0 40px #222, 0 0 50px #222, 0 0 75px #222;
+  }
+}
 .jumbotron {
   font-size: 1rem;
   background-image: url("../img/yfl.jpeg");

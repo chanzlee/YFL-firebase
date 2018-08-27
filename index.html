@@ -10,14 +10,20 @@
   </head>
   <body>
     <div class="container">
+      <button id="music-off" type="click">Sound off</button>
       <div class="jumbotron">
-        <h1>YFL ULTIMATE BATTLE</h1>
+        <h1 class="glow">YFL ULTIMATE BATTLE</h1>
+      </div>
+      <div id="update">
+        <p>Update v-1.0.1:</p>
+        <p>1. Sound track added. You can play the background music by start typing name. To block backbround sounds, use button on the top.</p>
+        <p>2. 2 new monsters added</p>
       </div>
       <form id="start-screen" class="form-group">
         <label for="name-input">
           <input class="form-control" id="name-input" placeholder="Enter name here">
         </label>
-        <button type="submit" class="btn btn-secondary" id="start">Start Game</button>
+        <button type="submit" class="btn blink btn-secondary" id="start">Start Game</button>
       </form>
       <div class="row" id="screen">
         <div id="master-stat">

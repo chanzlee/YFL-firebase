@@ -100,16 +100,6 @@ var TurnGame = (function() {
         $("#start-screen").hide();
         $("#game-menu").toggle();
         $("#battle-menu").fadeToggle();
-        // if ($("#game-menu").style.display === "block") {
-        //   $("#game-menu").hide();
-        //   $("#battle-menu").show();
-        //   $("#battle-input").focus();
-        //   // https://api.jquery.com/focus
-        // } else {
-        //   $("#game-menu").show();
-        //   $("#battle-menu").hide();
-        //   $("#menu-input").focus();
-        // }
         return this;
         $("*").fadeOut();
       },
@@ -145,6 +135,9 @@ var TurnGame = (function() {
       },
       menuInput: function(input) {
         if (input === "1") {
+          //Sound Control
+          menuSound.stop();
+          battleSound.play();
           return this.generateMonster();
           $('#menu-button').prop("disabled",true);
         } else if (input === "2") {
@@ -159,10 +152,12 @@ var TurnGame = (function() {
       exit: function(input) {
         $("#message").html('"THANK YOU for playing!" -Chan Lee-');
         $("*").fadeOut(5000);
+        $("#off").trigger("click");
       },
 
       battleInput: function (input) {
         if (input === "1") {
+          spankSound.play();
           return this.attackMonster();
         } else if (input === "2") {
           if (master.hp + master.lev * 20 < master.maxHp) {
@@ -172,6 +167,11 @@ var TurnGame = (function() {
           }
           return this.getHp().message("Recovered HP...").nextTurn();
         } else if (input === "3") {
+          winSound.play();
+          window.setTimeout(function(){
+            winSound.stop();
+            menuSound.play();
+          }, 4000);
           return this.clearMonster().message("Successfully escaped!");
         } else {
           alert("Invalid Input. Please choose among valid options.");
@@ -221,6 +221,9 @@ var TurnGame = (function() {
         return this;
       },
       win: function () {
+        //Sound Control
+        battleSound.stop();
+        winSound.play();
         var passingVar = this;
         window.setTimeout(function () {
           passingVar.message(monster.nick+" is down!");
@@ -230,6 +233,9 @@ var TurnGame = (function() {
             }, 2000);
           }, 2000);
           master.xp += monster.xp;
+          //Sound Control
+          winSound.stop();
+          menuSound.play();
           return passingVar.clearMonster().getXp();
         }, 1500);
       },
@@ -248,6 +254,7 @@ var TurnGame = (function() {
         window.setTimeout(function(){
           $('#message').html("<h1>Game Over</h1>");
         }, 2000);
+        $("#off").trigger("click");
         return false;
       }
     };
@@ -297,13 +304,35 @@ var flashOut = function(){
   $("#battle-menu").fadeOut();
   $("#screen").fadeOut();
   $("#monster-stat").fadeOut();
-  $("#message").fadeOut();
-  $("#battle-menu").fadeIn('slow');
-  $("#screen").fadeIn('slow');
   $("#monster-stat").fadeIn('slow');
-  $("#message").fadeIn('slow');
+  $("#screen").fadeIn('slow');
+  $("#battle-menu").fadeIn('slow');
+
 }
 
+//Sound constructor and soundtrack constants.
+function Sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    $("body").append(this.sound);
+    this.play = function(){
+      // reset play position to zero second then play
+      this.sound.currentTime = 0;
+      this.sound.play();
+    }
+    this.stop = function(){
+      this.sound.pause();
+    }
+}
+
+var introSound = new Sound("sound/intro.mp3");
+var menuSound = new Sound("sound/menu.mp3");
+var battleSound = new Sound("sound/battle.mp3");
+var winSound = new Sound("sound/win.mp3");
+var spankSound = new Sound("sound/spank.mp3");
 
 
 // Front-end ///////////////////////////////////////
@@ -312,8 +341,26 @@ $(document).ready(function() {
   $("#game-menu").hide();
   $("#battle-menu").hide();
 
+  // Music DOM eventhandlers
+  $("#start-screen").click(function(){
+    introSound.play();
+  });
+  $("#music-off").click(function(){
+    introSound.stop();
+    menuSound.stop();
+    battleSound.stop();
+    winSound.stop();
+  });
+
+  //Start Input event handler
   $("#start-screen").submit(function (event) {
     event.preventDefault();
+    $("#update").hide();
+
+    //Sound Control
+    introSound.stop();
+    menuSound.play();
+
     var reg1 = /\W/gi
     var reg2 = /ch.+n/gi
     var name = $("#name-input").val();
@@ -330,14 +377,18 @@ $(document).ready(function() {
       alert('Enter name');
     }
   });
+  //Menu Input event handler
   $("#game-menu").submit(function(event) {
+    $("#menu-button").prop("disabled",true);
     event.preventDefault();
     var menuInputValue = $("#menu-input").val();
     TurnGame.getInstance().menuInput(menuInputValue);
     $("#menu-input").val("");
   });
 
+  //Battle Input event handler
   $("#battle-menu").submit(function(event) {
+    $("#menu-button").prop("disabled",false);
     event.preventDefault();
     var userBattleInput = $("#battle-input").val();
     TurnGame.getInstance().battleInput(userBattleInput);
