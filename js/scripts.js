@@ -103,7 +103,7 @@ var TurnGame = (function() {
         return this;
         $("*").fadeOut();
       },
-
+      
       message: function (msg) {
         $("#message").hide();
         $("#message").html(msg);
@@ -134,6 +134,7 @@ var TurnGame = (function() {
         }, 3500);
       },
       menuInput: function(input) {
+        var passingVar = this;
         if (input === "1") {
           //Sound Control
           menuSound.stop();
@@ -141,18 +142,22 @@ var TurnGame = (function() {
           return this.generateMonster();
           $('#menu-button').prop("disabled",true);
         } else if (input === "2") {
+          $('#menu-button').prop("disabled",false);
           master.hp = master.maxHp;
-          return this.getHp().message("Recovered full HP...");
+          return this.getHp().message("Recovered full HP...")
         } else if (input === "3") {
+
           return this.exit();
         } else {
-          alert("Invalid Input. Please choose among valid options.");
+          $('#menu-button').prop("disabled",false);
+          return this.message("Invalid Input. Please choose among valid options.");
         }
       },
       exit: function(input) {
         $("#message").html('"THANK YOU for playing!" -Chan Lee-');
         $("*").fadeOut(5000);
         $("#off").trigger("click");
+        $("#music-off").trigger("click");
       },
 
       battleInput: function (input) {
@@ -167,6 +172,7 @@ var TurnGame = (function() {
           }
           return this.getHp().message("Recovered HP...").nextTurn();
         } else if (input === "3") {
+          battleSound.stop();
           winSound.play();
           window.setTimeout(function(){
             winSound.stop();
