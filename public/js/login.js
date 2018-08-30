@@ -4,7 +4,7 @@ $(document).ready(function(){
     var pw = $("#loginPasswd").val();
     console.log(pw);
     if (pw === "burgerking"){
-      window.location.assign("http://goenchan.com/yflkinggodgeneralemperorchungmugongmajesty.html");
+      window.location.assign("yflkinggodgeneralemperorchungmugongmajesty.html");
     } else {
       window.location.assign("http://yflnet.com/");
     }

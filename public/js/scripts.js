@@ -1,7 +1,29 @@
+var master = {
+      name: "",
+      lev: 1,
+      maxHp: 100,
+      hp: 100,
+      xp: 0,
+      att: 10
+    };
 
+var user ="";
+var realName ="";
+
+function writeUserData(userId, realName, name, lev, maxHp, hp, xp, att) {
+  firebase.database().ref('users/' + userId).set({
+    userId: userId,
+    realName: realName,
+    name: name,
+    lev: lev,
+    maxHp: maxHp,
+    hp: hp,
+    xp: xp,
+    att: att,
+  });
+}
 
 //Back-End ///////////////////////////////////////////////
-
 //TurnGame is  function objects that incorporate whole game contents objects. turngame will run the getInstance function that will intiate the game.
 // Thus, Turngame ()=> getInstance (name)=> initiate(name).
 var TurnGame = (function() {
@@ -10,15 +32,6 @@ var TurnGame = (function() {
     var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4")];
     masterName = masterName.toUpperCase();
     // Masters and Monsters will later be set as classes
-    var master = {
-      name: masterName,
-      lev: 1,
-      maxHp: 100,
-      hp: 100,
-      xp: 0,
-      att: 10
-    };
-
     //Monters is a array of objects.
     var monsters = [{
       id: 0,
@@ -103,7 +116,7 @@ var TurnGame = (function() {
         return this;
         $("*").fadeOut();
       },
-      
+
       message: function (msg) {
         $("#message").hide();
         $("#message").html(msg);
@@ -154,8 +167,11 @@ var TurnGame = (function() {
         }
       },
       exit: function(input) {
-        $("#message").html('"THANK YOU for playing!" -Chan Lee-');
-        $("*").fadeOut(5000);
+        $("#save").trigger("click");
+        setTimeout(function(){
+          $("#message").html('"THANK YOU for playing!" -Chan Lee-');
+        }, 2000);
+        $("*").fadeOut(6000);
         $("#off").trigger("click");
         $("#music-off").trigger("click");
       },
@@ -255,6 +271,7 @@ var TurnGame = (function() {
         monster = {};
       },
       gameOver: function () {
+        $("#save").trigger("click");
         $("#screen").html("DEAD");
         $('#message').html( master.name + " is Dead... ");
         window.setTimeout(function(){
@@ -313,7 +330,6 @@ var flashOut = function(){
   $("#monster-stat").fadeIn('slow');
   $("#screen").fadeIn('slow');
   $("#battle-menu").fadeIn('slow');
-
 }
 
 //Sound constructor and soundtrack constants.
@@ -344,6 +360,98 @@ var spankSound = new Sound("sound/spank.mp3");
 // Front-end ///////////////////////////////////////
 
 $(document).ready(function() {
+  // Firebase portion !!!!!!!!!!!
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyC6GJ_MCQzmZfXXJfI-RJ2dpIO5V8S3llg",
+    authDomain: "yfl-ult-fight.firebaseapp.com",
+    databaseURL: "https://yfl-ult-fight.firebaseio.com",
+    projectId: "yfl-ult-fight",
+    storageBucket: "yfl-ult-fight.appspot.com",
+    messagingSenderId: "693209051819"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+
+  //Authentication
+  var provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth().signInWithPopup(provider).then(function(result) {
+  var token = result.credential.accessToken;
+  user = result.user.email;
+  realName = result.user.displayName;
+  console.log("login")
+  console.log(user+" "+realName);
+
+  var combination = realName + user[0]+user[1]+user[2];
+  console.log(combination);
+  var accountRef = database.ref("users/"+ combination);
+  console.log(accountRef);
+  accountRef.on("value",gotData,errData);
+
+  function gotData(data){
+    console.log(data);
+    var userInfo = data.val();
+    if(userInfo.name !== undefined){
+      master = {
+        userId: userInfo.userId,
+        realName: userInfo.realName,
+        name: userInfo.name,
+        lev: userInfo.lev,
+        maxHp: userInfo.maxHp,
+        hp: userInfo.hp,
+        xp: userInfo.xp,
+        att: userInfo.att
+      }
+      console.log(master.userId+master.name);
+
+      console.log(master);
+      TurnGame.getInstance(master.name).getXp();
+      $("#game-menu").show();
+      $("#update").hide();
+      $(".jumbotron").hide();
+      $("#start-screen").hide();
+    } else {
+      console.log("no matching");
+    }
+  };
+  function errData (err) {
+    console.log("err");
+    console.log(err);
+  };
+
+  // console.log(master);
+  // console.log(instance);
+  // TurnGame.getInstance(master.name).getXp();
+  // $("#game-menu").show();
+  // $("#update").hide();
+  // $(".jumbotron").hide();
+  // $("#start-screen").hide();
+
+
+  }).catch(function(error) {
+  // window.location.assign("http://yflnet.com/");
+    console.log(user);
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  var email = error.email;
+  var credential = error.credential;
+  });
+
+  $("#save").click(function() {
+    if(master.name === ''){
+      alert("nothing to save!");
+    } else {
+      writeUserData(realName + user[0]+user[1]+user[2], realName, master.name, master.lev, master.maxHp, master.hp, master.xp, master.att);
+      alert("saved");
+      console.log(master);
+    }
+  });
+
+
+
+
+
   $("#game-menu").hide();
   $("#battle-menu").hide();
 
@@ -400,4 +508,7 @@ $(document).ready(function() {
     TurnGame.getInstance().battleInput(userBattleInput);
     $("#battle-input").val("");
   });
+
+
+
 });
