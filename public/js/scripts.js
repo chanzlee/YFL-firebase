@@ -426,7 +426,7 @@ $(document).ready(function() {
   console.log(combination);
   var accountRef = database.ref("users/"+ combination);
   console.log(accountRef);
-  accountRef.on("child-added",gotData,errData);
+  accountRef.on("child-changed",gotData,errData);
 
   function gotData(data){
     console.log(data);
