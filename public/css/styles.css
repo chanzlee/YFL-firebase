@@ -60,6 +60,7 @@ h1 {
   color: gray;
   padding-top: 50px;
   padding-bottom: 50px;
+  display: block;
 }
 
 form {

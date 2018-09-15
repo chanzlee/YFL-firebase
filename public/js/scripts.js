@@ -200,7 +200,7 @@ var TurnGame = (function() {
         }
       },
       exit: function(input) {
-        // $("#save").trigger("click");
+        $("#save").trigger("click");
         setTimeout(function(){
           $("#message").html('"THANK YOU for playing!" -Chan Lee-');
         }, 2000);
@@ -426,12 +426,12 @@ $(document).ready(function() {
   console.log(combination);
   var accountRef = database.ref("users/"+ combination);
   console.log(accountRef);
-  accountRef.on("value",gotData,errData);
+  accountRef.on("child-added",gotData,errData);
 
   function gotData(data){
     console.log(data);
     var userInfo = data.val();
-    if(userInfo.name !== undefined){
+    if(userInfo !== null){
       master = {
         userId: userInfo.userId,
         realName: userInfo.realName,
@@ -454,7 +454,7 @@ $(document).ready(function() {
       $("#start-screen").hide();
       } else {
         master.hp = master.maxHp;
-        alert("Welcome back! "+master.name+"!");
+        alert("Playing as "+master.name+".");
       }
 
     } else {
@@ -529,7 +529,7 @@ $(document).ready(function() {
       alert("Please use alphabet only.");
     } else if ( name.match(reg2)){
       alert("Ha Ha. Funny. You know you can't use that name.");
-    } else if (name && confirm("Hello, "+name.toUpperCase() +". Welcome to YFL ULTI BATTLE...")) {
+    } else if (name && confirm("Hello, "+name.toUpperCase() +". Welcome to YFL Ulti Battle...")) {
       TurnGame.getInstance(name).getXp();
       $("#game-menu").show();
       $(".jumbotron").hide();
