@@ -7,6 +7,7 @@ var master = {
       att: 10
     };
 
+var turn = true;
 var user ="";
 var realName ="";
 
@@ -29,8 +30,8 @@ function writeUserData(userId, realName, name, lev, maxHp, hp, xp, att) {
 var TurnGame = (function() {
   var instance;
   var initiate = function(masterName) {
-    var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4")];
-    masterName = masterName.toUpperCase();
+    var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4"),$("#img-5"),$("#img-6")];
+    master.name = masterName.toUpperCase();
     // Masters and Monsters will later be set as classes
     //Monters is a array of objects.
     var monsters = [{
@@ -38,36 +39,60 @@ var TurnGame = (function() {
       name: 'ReeRee "SongPa-Seal" Kim',
       nick: 'ReeRee',
       hp: 15 + master.lev * 10,
-      att: 1 + master.lev * 5,
+      maxHp: 15 + master.lev * 10,
+      att: 10 + master.lev * 5,
       xp: 5 + master.lev * 5,
-      skill: '"Hydro-Pump"!',
+      skill: '"Orange-Splash"!',
     }, {
 
       id: 1,
       name: 'JaeBom "Drunken" Lee',
       nick: "JaeBom",
-      hp: 25 + master.lev * 3,
-      att: 10 + master.lev,
+      hp: 50 + master.lev * 3,
+      maxHp: 50 + master.lev * 3,
+      att: 100 + master.lev,
       xp: 10 + master.lev,
-      skill: '"Soju-Slam"!',
+      skill: '"SoMac-Slam"!',
 
     }, {
       id: 2,
       name: 'SangBaek "Trinity" Shin',
       nick: "SangBaek",
       hp: 50 + master.lev * 5,
+      maxHp: 50 + master.lev * 5,
       att: 15 + master.lev * 2,
       xp: 20 + master.lev * 2,
-      skill: '"Explaining-Bullshit"!',
+      skill: '"Posting-book-on-Insta"!',
 
     }, {
       id: 3,
       name: 'Heejay "President" Kim',
       nick: "Heejay",
-      hp: 100 + master.lev * 10,
+      hp: 1 + master.lev * 5,
+      maxHp: 1 + master.lev * 5,
       att: 25 + master.lev * 5,
       xp: 50 + master.lev * 5,
-      skill: '"Nomura-Beam"!',
+      skill: '"Write-English-Guideline"!',
+
+    }, {
+      id: 4,
+      name: 'JinWon "Planner" Kim',
+      nick: "Jin",
+      hp: 40 + master.lev * 5,
+      maxHp: 40 + master.lev * 10,
+      att: 15 + master.lev * 5,
+      xp: 50 + master.lev * 5,
+      skill: '"Ikryong-Shouting"!',
+
+    }, {
+      id: 5,
+      name: 'SoYeon "Queen" Yoo',
+      nick: "SoYeon",
+      hp: 100 + master.lev * 10,
+      maxHp: 100 + master.lev * 10,
+      att: 1000 + master.lev * 5,
+      xp: 50 + master.lev * 5,
+      skill: '"Auditing"!',
 
     }];
 
@@ -99,12 +124,15 @@ var TurnGame = (function() {
         return this.getLevel().getHp();
       },
       getHp: function () {
-        if (master.hp < 0) {
+        if (master.hp <= 0) {
           return this.gameOver();
         }
+        else {
+
         $("#master-hp").html("HP: " + master.hp + "/" + master.maxHp);
 
         return this;
+        }
       },
 
       // No more than toggle() applied to 2 menus. should test just toggle()will work with focus() function.
@@ -128,6 +156,7 @@ var TurnGame = (function() {
       generateMonster: function() {
         var passingVar = this;
         monster = monsters[Math.floor(Math.random() * monsters.length)];
+        monster.hp=monster.maxHp;
         $("#monster-name").html(monster.name+" ");
         $("#monster-hp").html(" HP:" + monster.hp+" ");
         $("#monster-att").html(" ATT:" + monster.att+" ");
@@ -135,13 +164,17 @@ var TurnGame = (function() {
         imgArray[monster.id].slideToggle();
         window.setTimeout(function (){
           if (monster.name === 'JaeBom "Drunken" Lee') {
-            passingVar.message(monster.nick + ": Let's have just one more round of drink! @.@");
+            passingVar.message(monster.nick + ": Please buff me Chan! @.@");
           } else if (monster.name === 'SangBaek "Trinity" Shin') {
             passingVar.message(monster.nick + ": Umm... Let me explain something real quick...");
           } else if (monster.name === 'Heejay "President" Kim'){
-            passingVar.message(monster.nick+ ": By construction... You can't beat me!");
+            passingVar.message(monster.nick+ ": Let's go Mapo Bridge!");
+          } else if (monster.name === 'JinWon "Planner" Kim'){
+            passingVar.message(monster.nick+ ": Who didn't do the voting!!!");
+          } else if (monster.name === 'SoYeon "Queen" Yoo'){
+            passingVar.message(monster.nick+ ": Life's like accounting. Debit, Credit, and Soju.");
           } else {
-            passingVar.message(monster.nick+"'s status: Another day of blue sky...");
+            passingVar.message(monster.nick+"'s status: I'll be always stood on the mid-autumn...");
           }
           return passingVar.toggleMenu();
         }, 3500);
@@ -167,7 +200,7 @@ var TurnGame = (function() {
         }
       },
       exit: function(input) {
-        $("#save").trigger("click");
+        // $("#save").trigger("click");
         setTimeout(function(){
           $("#message").html('"THANK YOU for playing!" -Chan Lee-');
         }, 2000);
@@ -271,13 +304,18 @@ var TurnGame = (function() {
         monster = {};
       },
       gameOver: function () {
+        battleSound.stop();
+        gameOverSound.play();
+        $("#game-menu").hide();
+        $("#battle-menu").hide();
+        // $('#battle-button').prop("disabled",true);
+        // $('#menu-button').prop("disabled",true);
         $("#save").trigger("click");
-        $("#screen").html("DEAD");
         $('#message').html( master.name + " is Dead... ");
         window.setTimeout(function(){
-          $('#message').html("<h1>Game Over</h1>");
+          $('#message').html("<h1>Game Over</h1><br><p><a href='https://yfl-ult-fight.firebaseapp.com/'>click here to try again</a></p>");
         }, 2000);
-        $("#off").trigger("click");
+        $("#music-off").trigger("click");
         return false;
       }
     };
@@ -355,6 +393,7 @@ var menuSound = new Sound("sound/menu.mp3");
 var battleSound = new Sound("sound/battle.mp3");
 var winSound = new Sound("sound/win.mp3");
 var spankSound = new Sound("sound/spank.mp3");
+var gameOverSound = new Sound("sound/gameover.mp3");
 
 
 // Front-end ///////////////////////////////////////
@@ -407,10 +446,17 @@ $(document).ready(function() {
 
       console.log(master);
       TurnGame.getInstance(master.name).getXp();
+
+      if(master.hp > 0) {
       $("#game-menu").show();
       $("#update").hide();
       $(".jumbotron").hide();
       $("#start-screen").hide();
+      } else {
+        master.hp = master.maxHp;
+        alert("Welcome back! "+master.name+"!");
+      }
+
     } else {
       console.log("no matching");
     }
@@ -443,7 +489,7 @@ $(document).ready(function() {
       alert("nothing to save!");
     } else {
       writeUserData(realName + user[0]+user[1]+user[2], realName, master.name, master.lev, master.maxHp, master.hp, master.xp, master.att);
-      alert("saved");
+      alert("save & load");
       console.log(master);
     }
   });
@@ -460,6 +506,7 @@ $(document).ready(function() {
     introSound.play();
   });
   $("#music-off").click(function(){
+    gameOverSound.stop();
     introSound.stop();
     menuSound.stop();
     battleSound.stop();
