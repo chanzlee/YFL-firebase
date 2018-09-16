@@ -526,7 +526,7 @@ $(document).ready(function() {
         // console.log(master.name);
         // console.log(master.lev);
         // TurnGame.getInstance(master).getXp();
-      alert("Playing as "+userInfo.name+".");
+      alert("Welcome back "+userInfo.name+"!");
       $("#update").hide();
 
       //Sound Control
