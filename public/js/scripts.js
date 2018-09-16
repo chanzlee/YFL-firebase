@@ -5,7 +5,7 @@ var master = {
       maxHp: 100,
       hp: 100,
       xp: 0,
-      att: 10
+      att: 10,
     };
 
 //auth constants
@@ -32,10 +32,18 @@ function writeUserData(userId, realName, name, lev, maxHp, hp, xp, att) {
 // Thus, Turngame ()=> getInstance (name)=> initiate(name).
 var TurnGame = (function() {
   var instance;
-  var initiate = function(masterName) {
+  var initiate = function(userInfo) {
     var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4"),$("#img-5"),$("#img-6"),$("#img-7"),$("#img-8"),$("#img-9"),$("#img-10"),$("#img-11")];
-    master.name = masterName.toUpperCase();
+    master.name = userInfo.name.toUpperCase();
     // Masters and Monsters will later be set as classes
+    var master = {
+          name: "",
+          lev: 1,
+          maxHp: 100,
+          hp: 100,
+          xp: 0,
+          att: 10,
+        };
     //Monters is a array of objects.
     var monsters = [{
       id: 0,
@@ -492,20 +500,10 @@ $(document).ready(function() {
 
     function gotData(data){
       console.log(data);
+      console.log("loadprevious data");
       var userInfo = data.val();
 
       // var userInfo = accountRef.data.val();
-      if(userInfo !== null){
-        master = {
-          userId: userInfo.userId,
-          realName: userInfo.realName,
-          name: userInfo.name,
-          lev: userInfo.lev,
-          maxHp: userInfo.maxHp,
-          hp: userInfo.hp,
-          xp: userInfo.xp,
-          att: userInfo.att
-        }
     // // if user has previous data or not
     // if (accountRef != null) {
     //   console.log("load previous data");
@@ -520,7 +518,26 @@ $(document).ready(function() {
     //     att: accountRef.att,
     //   }
 
-      TurnGame.getInstance(master.name).getXp();
+      if(userInfo !== null){
+        console.log("user info not null");
+        console.log(userInfo.userId);
+        console.log(userInfo.realName);
+        console.log(userInfo.lev);
+        TurnGame.getInstance(userInfo.name);
+
+        var master = {
+          userId: userInfo.userId,
+          realName: userInfo.realName,
+          name: userInfo.name,
+          lev: userInfo.lev,
+          maxHp: userInfo.maxHp,
+          hp: userInfo.hp,
+          xp: userInfo.xp,
+          att: userInfo.att,
+        }
+        console.log(master.name);
+        console.log(master.lev);
+        TurnGame.getInstance().getXp();
       alert("Playing as "+master.name+".");
       $("#update").hide();
 
