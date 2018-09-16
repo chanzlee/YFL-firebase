@@ -8,6 +8,7 @@ var master = {
     };
 
 var turn = true;
+var currentUser="";
 var user ="";
 var realName ="";
 
@@ -30,7 +31,7 @@ function writeUserData(userId, realName, name, lev, maxHp, hp, xp, att) {
 var TurnGame = (function() {
   var instance;
   var initiate = function(masterName) {
-    var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4"),$("#img-5"),$("#img-6")];
+    var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4"),$("#img-5"),$("#img-6"),$("#img-7"),$("#img-8"),$("#img-9"),$("#img-10"),$("#img-11")];
     master.name = masterName.toUpperCase();
     // Masters and Monsters will later be set as classes
     //Monters is a array of objects.
@@ -38,11 +39,12 @@ var TurnGame = (function() {
       id: 0,
       name: 'ReeRee "SongPa-Seal" Kim',
       nick: 'ReeRee',
-      hp: 15 + master.lev * 10,
+      hp: 20 + master.lev * 10,
       maxHp: 15 + master.lev * 10,
       att: 10 + master.lev * 5,
-      xp: 5 + master.lev * 5,
+      xp: 30 + master.lev * 5,
       skill: '"Orange-Splash"!',
+      initiate: "'s status: I'll be always stood on the mid-autumn...",
     }, {
 
       id: 1,
@@ -51,18 +53,20 @@ var TurnGame = (function() {
       hp: 50 + master.lev * 3,
       maxHp: 50 + master.lev * 3,
       att: 100 + master.lev,
-      xp: 10 + master.lev,
+      xp: 30 + master.lev,
       skill: '"SoMac-Slam"!',
+      initiate: ": Please buff me Chan! @.@",
 
     }, {
       id: 2,
       name: 'SangBaek "Trinity" Shin',
       nick: "SangBaek",
-      hp: 50 + master.lev * 5,
-      maxHp: 50 + master.lev * 5,
+      hp: 20 + master.lev * 5,
+      maxHp: 15 + master.lev * 5,
       att: 15 + master.lev * 2,
-      xp: 20 + master.lev * 2,
-      skill: '"Posting-book-on-Insta"!',
+      xp: 50 + master.lev * 2,
+      skill: '"GGamji Homework"!',
+      initiate: ": Umm... Let me explain something real quick...",
 
     }, {
       id: 3,
@@ -71,18 +75,20 @@ var TurnGame = (function() {
       hp: 1 + master.lev * 5,
       maxHp: 1 + master.lev * 5,
       att: 25 + master.lev * 5,
-      xp: 50 + master.lev * 5,
+      xp: 30 + master.lev * 5,
       skill: '"Write-English-Guideline"!',
+      initiate: ": Let's go Mapo Bridge!",
 
     }, {
       id: 4,
       name: 'JinWon "Planner" Kim',
       nick: "Jin",
-      hp: 40 + master.lev * 5,
-      maxHp: 40 + master.lev * 10,
+      hp: 30 + master.lev * 5,
+      maxHp: 30 + master.lev * 10,
       att: 15 + master.lev * 5,
       xp: 50 + master.lev * 5,
       skill: '"Ikryong-Shouting"!',
+      initiate: ": Who didn't do the voting!!!",
 
     }, {
       id: 5,
@@ -91,8 +97,64 @@ var TurnGame = (function() {
       hp: 100 + master.lev * 10,
       maxHp: 100 + master.lev * 10,
       att: 1000 + master.lev * 5,
-      xp: 50 + master.lev * 5,
+      xp: 5000 + master.lev * 5,
       skill: '"Auditing"!',
+      initiate: ": Life's like accounting. Debit, Credit, and Soju.",
+
+    }, {
+      id: 6,
+      name: 'John "C" Hull',
+      nick: "Hull",
+      hp: 999 + master.lev * 10,
+      maxHp: 999 + master.lev * 10,
+      att: 10000 + master.lev * 5,
+      xp: 50000 + master.lev * 5,
+      skill: '"Do you know BSM"?',
+      initiate: ": Sarang heyyo YFL.",
+
+    }, {
+      id: 7,
+      name: 'Fixed "Income" Securities',
+      nick: "Tuckman chack",
+      hp: 15 + master.lev * 3,
+      maxHp: 15+ master.lev * 3,
+      att: master.hp * 0.1,
+      xp: 70 + master.lev * 5,
+      skill: '"Discount HP"!"',
+      initiate: ": P-STRIPS are not fungible, thus idiosyncratic.",
+
+    }, {
+      id: 8,
+      name: 'Chan "Ethan" Lee',
+      nick: "Chan",
+      hp: 150 + master.lev * 3,
+      maxHp: 150+ master.lev * 3,
+      att: 10 + master.lev * 5,
+      xp: 100 + master.lev * 5,
+      skill: '"Look at Hull page 326...!"',
+      initiate: ": You are humiliation of YFL.",
+
+    }, {
+      id: 9,
+      name: 'KyungSoo "Red" Kim',
+      nick: "Kyle",
+      hp: 20 + master.lev * 3,
+      maxHp: 20+ master.lev * 3,
+      att: 10 + master.lev * 5,
+      xp: 5 + master.lev * 5,
+      skill: '"Drink-Milkis!"',
+      initiate: ": I have high alcohol tolerance.",
+
+    }, {
+      id: 10,
+      name: 'UnderWood "Yonsei" Kim',
+      nick: "UnderWood",
+      hp: 20 + master.lev * 3,
+      maxHp: 10+ master.lev * 3,
+      att: 5 + master.lev * 5,
+      xp: 10 + master.lev * 5,
+      skill: 'MinJok Go Dae!!!',
+      initiate: ": Araching Aracho!!!.",
 
     }];
 
@@ -100,7 +162,7 @@ var TurnGame = (function() {
     var turn = true;
     return {
       // Basic UI functions ///////////////////////////////////////////////
-      // Note that most of functions are return "this" for continued method chaining.
+      // Note that most of functions are return "this" for continued method chaining on instance.
       getLevel: function () {
         $("#master-level").html(" LV: "+master.lev);
         return this;
@@ -163,19 +225,8 @@ var TurnGame = (function() {
         this.message("Encountered " + monster.name + "!");
         imgArray[monster.id].slideToggle();
         window.setTimeout(function (){
-          if (monster.name === 'JaeBom "Drunken" Lee') {
-            passingVar.message(monster.nick + ": Please buff me Chan! @.@");
-          } else if (monster.name === 'SangBaek "Trinity" Shin') {
-            passingVar.message(monster.nick + ": Umm... Let me explain something real quick...");
-          } else if (monster.name === 'Heejay "President" Kim'){
-            passingVar.message(monster.nick+ ": Let's go Mapo Bridge!");
-          } else if (monster.name === 'JinWon "Planner" Kim'){
-            passingVar.message(monster.nick+ ": Who didn't do the voting!!!");
-          } else if (monster.name === 'SoYeon "Queen" Yoo'){
-            passingVar.message(monster.nick+ ": Life's like accounting. Debit, Credit, and Soju.");
-          } else {
-            passingVar.message(monster.nick+"'s status: I'll be always stood on the mid-autumn...");
-          }
+          passingVar.message(monster.nick + " "+ monster.initiate);
+
           return passingVar.toggleMenu();
         }, 3500);
       },
@@ -203,8 +254,8 @@ var TurnGame = (function() {
         $("#save").trigger("click");
         setTimeout(function(){
           $("#message").html('"THANK YOU for playing!" -Chan Lee-');
-        }, 2000);
-        $("*").fadeOut(6000);
+        }, 1000);
+        $("*").fadeOut(8000);
         $("#off").trigger("click");
         $("#music-off").trigger("click");
       },
@@ -226,7 +277,7 @@ var TurnGame = (function() {
           window.setTimeout(function(){
             winSound.stop();
             menuSound.play();
-          }, 4000);
+          }, 2500);
           return this.clearMonster().message("Successfully escaped!");
         } else {
           alert("Invalid Input. Please choose among valid options.");
@@ -306,16 +357,19 @@ var TurnGame = (function() {
       gameOver: function () {
         battleSound.stop();
         gameOverSound.play();
+        alert("You are dead...")
         $("#game-menu").hide();
         $("#battle-menu").hide();
-        // $('#battle-button').prop("disabled",true);
-        // $('#menu-button').prop("disabled",true);
-        $("#save").trigger("click");
+        $('#battle-button').prop("disabled",true);
+        $('#menu-button').prop("disabled",true);
+        // $("#save").trigger("click");
         $('#message').html( master.name + " is Dead... ");
         window.setTimeout(function(){
           $('#message').html("<h1>Game Over</h1><br><p><a href='https://yfl-ult-fight.firebaseapp.com/'>click here to try again</a></p>");
         }, 2000);
         $("#music-off").trigger("click");
+        //revive the master data
+        master.hp = master.maxHp;
         return false;
       }
     };
@@ -419,61 +473,118 @@ $(document).ready(function() {
   var token = result.credential.accessToken;
   user = result.user.email;
   realName = result.user.displayName;
-  console.log("login")
+  console.log("login");
   console.log(user+" "+realName);
 
   var combination = realName + user[0]+user[1]+user[2];
   console.log(combination);
   var accountRef = database.ref("users/"+ combination);
   console.log(accountRef);
-  accountRef.on("child-changed",gotData,errData);
 
-  function gotData(data){
-    console.log(data);
-    var userInfo = data.val();
-    if(userInfo !== null){
-      master = {
-        userId: userInfo.userId,
-        realName: userInfo.realName,
-        name: userInfo.name,
-        lev: userInfo.lev,
-        maxHp: userInfo.maxHp,
-        hp: userInfo.hp,
-        xp: userInfo.xp,
-        att: userInfo.att
-      }
-      console.log(master.userId+master.name);
+  currentUser = firebase.auth().currentUser;
+  console.log(currentUser);
+  // if user log in or not
+  if (currentUser != null) {
+    console.log("logged in");
+    accountRef.on("value",gotData);
 
-      console.log(master);
+    function gotData(data){
+      console.log(data);
+      var userInfo = data.val();
+
+      // var userInfo = accountRef.data.val();
+      if(userInfo !== null){
+        master = {
+          userId: userInfo.userId,
+          realName: userInfo.realName,
+          name: userInfo.name,
+          lev: userInfo.lev,
+          maxHp: userInfo.maxHp,
+          hp: userInfo.hp,
+          xp: userInfo.xp,
+          att: userInfo.att
+        }
+    // // if user has previous data or not
+    // if (accountRef != null) {
+    //   console.log("load previous data");
+    //   master = {
+    //     userId: accountRef.userId,
+    //     realName: accountRef.realName,
+    //     name: accountRef.name,
+    //     lev: accountRef.lev,
+    //     maxHp: accountRef.maxHp,
+    //     hp: accountRef.hp,
+    //     xp: accountRef.xp,
+    //     att: accountRef.att,
+    //   }
+
       TurnGame.getInstance(master.name).getXp();
-
-      if(master.hp > 0) {
-      $("#game-menu").show();
+      alert("Playing as "+master.name+".");
       $("#update").hide();
+
+      //Sound Control
+      introSound.stop();
+      menuSound.play();
+
+      $("#game-menu").show();
       $(".jumbotron").hide();
       $("#start-screen").hide();
+
       } else {
-        master.hp = master.maxHp;
-        alert("Playing as "+master.name+".");
+        console.log("set default master");
+        var master = {
+              name: "",
+              lev: 1,
+              maxHp: 100,
+              hp: 100,
+              xp: 0,
+              att: 10
+        };
+        alert("Enter your name to start")
       }
-
-    } else {
-      console.log("no matching");
     }
-  };
-  function errData (err) {
-    console.log("err");
-    console.log(err);
-  };
+  //if user didn't log in, hide save button.
+  } else {
+    console.log("not logged in, hide save button");
+    $("#save").hide();
+  }
 
-  // console.log(master);
-  // console.log(instance);
-  // TurnGame.getInstance(master.name).getXp();
-  // $("#game-menu").show();
-  // $("#update").hide();
-  // $(".jumbotron").hide();
-  // $("#start-screen").hide();
 
+  //If saved, save and load the changed data.
+  // accountRef.on("child-changed",gotData,errData);
+  //
+  // function gotData(data){
+  //   console.log(data);
+  //   var userInfo = data.val();
+  //   if(userInfo !== null){
+  //     master = {
+  //       userId: userInfo.userId,
+  //       realName: userInfo.realName,
+  //       name: userInfo.name,
+  //       lev: userInfo.lev,
+  //       maxHp: userInfo.maxHp,
+  //       hp: userInfo.hp,
+  //       xp: userInfo.xp,
+  //       att: userInfo.att
+  //     }
+  //     console.log(master.userId+master.name);
+  //
+  //     console.log(master);
+  //     TurnGame.getInstance(master.name).getXp();
+  //
+  //     if(master.hp > 0) {
+  //     $("#game-menu").show();
+  //     $("#update").hide();
+  //     $(".jumbotron").hide();
+  //     $("#start-screen").hide();
+  //     } else {
+  //       master.hp = master.maxHp;
+  //       alert("Playing as "+master.name+".");
+  //     }
+
+    // } else {
+    //   console.log("no matching");
+    // }
 
   }).catch(function(error) {
   // window.location.assign("http://yflnet.com/");
@@ -484,12 +595,13 @@ $(document).ready(function() {
   var credential = error.credential;
   });
 
+
   $("#save").click(function() {
     if(master.name === ''){
-      alert("nothing to save!");
+      alert("Nothing to save!");
     } else {
       writeUserData(realName + user[0]+user[1]+user[2], realName, master.name, master.lev, master.maxHp, master.hp, master.xp, master.att);
-      alert("save & load");
+      alert("Data Saved");
       console.log(master);
     }
   });
@@ -529,7 +641,7 @@ $(document).ready(function() {
       alert("Please use alphabet only.");
     } else if ( name.match(reg2)){
       alert("Ha Ha. Funny. You know you can't use that name.");
-    } else if (name && confirm("Hello, "+name.toUpperCase() +". Welcome to YFL Ulti Battle...")) {
+    } else if (name && confirm("Hello, "+name.toUpperCase() +". Welcome to YFL Ultimate Battle...")) {
       TurnGame.getInstance(name).getXp();
       $("#game-menu").show();
       $(".jumbotron").hide();
@@ -555,7 +667,5 @@ $(document).ready(function() {
     TurnGame.getInstance().battleInput(userBattleInput);
     $("#battle-input").val("");
   });
-
-
 
 });
