@@ -1,3 +1,4 @@
+//constants
 var master = {
       name: "",
       lev: 1,
@@ -7,6 +8,7 @@ var master = {
       att: 10
     };
 
+//auth constants
 var turn = true;
 var currentUser="";
 var user ="";
@@ -81,8 +83,8 @@ var TurnGame = (function() {
 
     }, {
       id: 4,
-      name: 'JinWon "Planner" Kim',
-      nick: "Jin",
+      name: 'JinWon "Noni" Kim',
+      nick: "Noni",
       hp: 30 + master.lev * 5,
       maxHp: 30 + master.lev * 10,
       att: 15 + master.lev * 5,
@@ -597,12 +599,18 @@ $(document).ready(function() {
 
 
   $("#save").click(function() {
-    if(master.name === ''){
-      alert("Nothing to save!");
+    if (currentUser===""){
+      alert("You are not authenticated");
+      $("#save").prop("disabled",true);
     } else {
-      writeUserData(realName + user[0]+user[1]+user[2], realName, master.name, master.lev, master.maxHp, master.hp, master.xp, master.att);
-      alert("Data Saved");
-      console.log(master);
+
+      if(master.name === ''){
+        alert("Nothing to save!");
+      } else {
+        writeUserData(realName + user[0]+user[1]+user[2], realName, master.name, master.lev, master.maxHp, master.hp, master.xp, master.att);
+        alert("Data Saved");
+        console.log(master);
+      }
     }
   });
 
