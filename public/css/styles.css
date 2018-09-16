@@ -6,6 +6,9 @@ form {
   margin-top: 1%;
   margin-bottom: 1%;
 }
+button {
+  margin-bottom: 1%;
+}
 .container {
   padding: 30px;
   border-radius: 10px;

@@ -1,12 +1,13 @@
-//constants
-var master = {
-      name: "",
-      lev: 1,
-      maxHp: 100,
-      hp: 100,
-      xp: 0,
-      att: 10,
-    };
+master = {
+  userId: '',
+  realName: '',
+  name: '',
+  lev: 1,
+  maxHp: 100,
+  hp: 100,
+  xp: 0,
+  att: 10,
+};
 
 //auth constants
 var turn = true;
@@ -34,16 +35,18 @@ var TurnGame = (function() {
   var instance;
   var initiate = function(userInfo) {
     var imgArray = [$("#img-1"),$("#img-2"),$("#img-3"),$("#img-4"),$("#img-5"),$("#img-6"),$("#img-7"),$("#img-8"),$("#img-9"),$("#img-10"),$("#img-11")];
-    master.name = userInfo.name.toUpperCase();
+
     // Masters and Monsters will later be set as classes
-    var master = {
-          name: "",
-          lev: 1,
-          maxHp: 100,
-          hp: 100,
-          xp: 0,
-          att: 10,
-        };
+    master = {
+      userId: userInfo.userId,
+      realName: userInfo.realName,
+      name: userInfo.name.toUpperCase(),
+      lev: userInfo.lev,
+      maxHp: userInfo.maxHp,
+      hp: userInfo.hp,
+      xp: userInfo.xp,
+      att: userInfo.att,
+    }
     //Monters is a array of objects.
     var monsters = [{
       id: 0,
@@ -130,7 +133,7 @@ var TurnGame = (function() {
       maxHp: 15+ master.lev * 3,
       att: master.hp * 0.1,
       xp: 70 + master.lev * 5,
-      skill: '"Discount HP"!"',
+      skill: '"Thursday Session"!"',
       initiate: ": P-STRIPS are not fungible, thus idiosyncratic.",
 
     }, {
@@ -503,42 +506,27 @@ $(document).ready(function() {
       console.log("loadprevious data");
       var userInfo = data.val();
 
-      // var userInfo = accountRef.data.val();
-    // // if user has previous data or not
-    // if (accountRef != null) {
-    //   console.log("load previous data");
-    //   master = {
-    //     userId: accountRef.userId,
-    //     realName: accountRef.realName,
-    //     name: accountRef.name,
-    //     lev: accountRef.lev,
-    //     maxHp: accountRef.maxHp,
-    //     hp: accountRef.hp,
-    //     xp: accountRef.xp,
-    //     att: accountRef.att,
-    //   }
-
       if(userInfo !== null){
         console.log("user info not null");
         console.log(userInfo.userId);
         console.log(userInfo.realName);
         console.log(userInfo.lev);
-        TurnGame.getInstance(userInfo.name);
+        TurnGame.getInstance(userInfo).getXp();
 
-        var master = {
-          userId: userInfo.userId,
-          realName: userInfo.realName,
-          name: userInfo.name,
-          lev: userInfo.lev,
-          maxHp: userInfo.maxHp,
-          hp: userInfo.hp,
-          xp: userInfo.xp,
-          att: userInfo.att,
-        }
-        console.log(master.name);
-        console.log(master.lev);
-        TurnGame.getInstance().getXp();
-      alert("Playing as "+master.name+".");
+        // var master = {
+        //   userId: userInfo.userId,
+        //   realName: userInfo.realName,
+        //   name: userInfo.name,
+        //   lev: userInfo.lev,
+        //   maxHp: userInfo.maxHp,
+        //   hp: userInfo.hp,
+        //   xp: userInfo.xp,
+        //   att: userInfo.att,
+        // }
+        // console.log(master.name);
+        // console.log(master.lev);
+        // TurnGame.getInstance(master).getXp();
+      alert("Playing as "+userInfo.name+".");
       $("#update").hide();
 
       //Sound Control
