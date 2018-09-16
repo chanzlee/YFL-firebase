@@ -52,23 +52,23 @@ var TurnGame = (function() {
       id: 0,
       name: 'ReeRee "SongPa-Seal" Kim',
       nick: 'ReeRee',
-      hp: 20 + master.lev * 10,
-      maxHp: 15 + master.lev * 10,
+      hp: 20 + master.lev * 5,
+      maxHp: 15 + master.lev * 5,
       att: 10 + master.lev * 5,
       xp: 30 + master.lev * 5,
       skill: '"Orange-Splash"!',
-      initiate: "'s status: I'll be always stood on the mid-autumn...",
+      initiate: "'s status: I'll be always stood on the middle of autumn...",
     }, {
 
       id: 1,
       name: 'JaeBom "Drunken" Lee',
       nick: "JaeBom",
-      hp: 50 + master.lev * 3,
+      hp: 500 + master.lev * 3,
       maxHp: 50 + master.lev * 3,
-      att: 100 + master.lev,
-      xp: 30 + master.lev,
+      att: 100 + master.lev * 3,
+      xp: 30 + master.lev * 5,
       skill: '"SoMac-Slam"!',
-      initiate: ": Please buff me Chan! @.@",
+      initiate: ": Chan Why am I weaker than SB? @.@",
 
     }, {
       id: 2,
@@ -76,8 +76,8 @@ var TurnGame = (function() {
       nick: "SangBaek",
       hp: 20 + master.lev * 5,
       maxHp: 15 + master.lev * 5,
-      att: 15 + master.lev * 2,
-      xp: 50 + master.lev * 2,
+      att: 15 + master.lev * 5,
+      xp: 50 + master.lev * 5,
       skill: '"GGamji Homework"!',
       initiate: ": Umm... Let me explain something real quick...",
 
@@ -96,7 +96,7 @@ var TurnGame = (function() {
       id: 4,
       name: 'JinWon "Noni" Kim',
       nick: "Noni",
-      hp: 30 + master.lev * 5,
+      hp: 30 + master.lev * 10,
       maxHp: 30 + master.lev * 10,
       att: 15 + master.lev * 5,
       xp: 50 + master.lev * 5,
@@ -129,8 +129,8 @@ var TurnGame = (function() {
       id: 7,
       name: 'Fixed "Income" Securities',
       nick: "Tuckman chack",
-      hp: 15 + master.lev * 3,
-      maxHp: 15+ master.lev * 3,
+      hp: 15 + master.lev * 5,
+      maxHp: 15+ master.lev * 5,
       att: master.hp * 0.1,
       xp: 70 + master.lev * 5,
       skill: '"Thursday Session"!"',
@@ -140,8 +140,8 @@ var TurnGame = (function() {
       id: 8,
       name: 'Chan "Ethan" Lee',
       nick: "Chan",
-      hp: 150 + master.lev * 3,
-      maxHp: 150+ master.lev * 3,
+      hp: 150 + master.lev * 5,
+      maxHp: 150+ master.lev * 5,
       att: 10 + master.lev * 5,
       xp: 100 + master.lev * 5,
       skill: '"Look at Hull page 326...!"',
@@ -151,8 +151,8 @@ var TurnGame = (function() {
       id: 9,
       name: 'KyungSoo "Red" Kim',
       nick: "Kyle",
-      hp: 20 + master.lev * 3,
-      maxHp: 20+ master.lev * 3,
+      hp: 20 + master.lev * 5,
+      maxHp: 20+ master.lev * 5,
       att: 10 + master.lev * 5,
       xp: 5 + master.lev * 5,
       skill: '"Drink-Milkis!"',
@@ -162,8 +162,8 @@ var TurnGame = (function() {
       id: 10,
       name: 'UnderWood "Yonsei" Kim',
       nick: "UnderWood",
-      hp: 20 + master.lev * 3,
-      maxHp: 10+ master.lev * 3,
+      hp: 20 + master.lev * 5,
+      maxHp: 10+ master.lev * 5,
       att: 5 + master.lev * 5,
       xp: 10 + master.lev * 5,
       skill: 'MinJok Go Dae!!!',
@@ -368,7 +368,7 @@ var TurnGame = (function() {
         monster = {};
       },
       gameOver: function () {
-        battleSound.stop();
+        $("#music-off").trigger("click");
         gameOverSound.play();
         alert("You are dead...")
         $("#game-menu").hide();
@@ -378,9 +378,9 @@ var TurnGame = (function() {
         // $("#save").trigger("click");
         $('#message').html( master.name + " is Dead... ");
         window.setTimeout(function(){
-          $('#message').html("<h1>Game Over</h1><br><p><a href='https://yfl-ult-fight.firebaseapp.com/'>click here to try again</a></p>");
+          $('#message').html("<h1>Game Over</h1><p><a href='https://yfl-ult-fight.firebaseapp.com/'>click here to try again</a></p>");
         }, 2000);
-        $("#music-off").trigger("click");
+
         //revive the master data
         master.hp = master.maxHp;
         return false;
