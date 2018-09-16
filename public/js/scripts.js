@@ -539,14 +539,6 @@ $(document).ready(function() {
 
       } else {
         console.log("set default master");
-        var master = {
-              name: "",
-              lev: 1,
-              maxHp: 100,
-              hp: 100,
-              xp: 0,
-              att: 10
-        };
         alert("Enter your name to start")
       }
     }
@@ -647,6 +639,14 @@ $(document).ready(function() {
     introSound.stop();
     menuSound.play();
 
+    var userInfo = {
+      name: "",
+      lev: 1,
+      maxHp: 100,
+      hp: 100,
+      xp: 0,
+      att: 10,
+    }
     var reg1 = /\W/gi
     var reg2 = /ch.+n/gi
     var name = $("#name-input").val();
@@ -655,7 +655,9 @@ $(document).ready(function() {
     } else if ( name.match(reg2)){
       alert("Ha Ha. Funny. You know you can't use that name.");
     } else if (name && confirm("Hello, "+name.toUpperCase() +". Welcome to YFL Ultimate Battle...")) {
-      TurnGame.getInstance(name).getXp();
+
+      userInfo.name = name;
+      TurnGame.getInstance(userInfo).getXp();
       $("#game-menu").show();
       $(".jumbotron").hide();
       $("#start-screen").hide();
