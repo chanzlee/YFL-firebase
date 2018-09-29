@@ -50,25 +50,25 @@ var TurnGame = (function() {
     //Monters is a array of objects.
     var monsters = [{
       id: 0,
-      name: 'ReeRee "SongPa-Seal" Kim',
+      name: 'ReeRee "Orange" Kim',
       nick: 'ReeRee',
       hp: 20 + master.lev * 5,
       maxHp: 15 + master.lev * 5,
       att: 10 + master.lev * 5,
       xp: 30 + master.lev * 5,
-      skill: '"Orange-Splash"!',
-      initiate: "'s status: I'll be always stood on the middle of autumn...",
+      skill: '"Orange-Bong-Bong"!',
+      initiate: "how orange since I had orange...lol",
     }, {
 
       id: 1,
-      name: 'JaeBom "Drunken" Lee',
-      nick: "JaeBom",
+      name: 'JeBum "Drunken" Lee',
+      nick: "JeBuum",
       hp: 500 + master.lev * 3,
       maxHp: 50 + master.lev * 3,
       att: 100 + master.lev * 3,
       xp: 30 + master.lev * 5,
       skill: '"SoMac-Slam"!',
-      initiate: ": Chan Why am I weaker than SB? @.@",
+      initiate: ": Chan fix my name @.@",
 
     }, {
       id: 2,
@@ -79,7 +79,7 @@ var TurnGame = (function() {
       att: 15 + master.lev * 5,
       xp: 50 + master.lev * 5,
       skill: '"GGamji Homework"!',
-      initiate: ": Umm... Let me explain something real quick...",
+      initiate: ": Umm... Give me 1min, I'll set the timer...",
 
     }, {
       id: 3,
