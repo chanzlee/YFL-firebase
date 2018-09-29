@@ -77,7 +77,7 @@ var TurnGame = (function() {
       hp: 20 + master.lev * 5,
       maxHp: 15 + master.lev * 5,
       att: 15 + master.lev * 5,
-      xp: 50 + master.lev * 5,
+      xp: 40 + master.lev * 5,
       skill: '"GGamji Homework"!',
       initiate: ": Umm... Give me 1min, I'll set the timer...",
 
@@ -98,10 +98,10 @@ var TurnGame = (function() {
       nick: "Noni",
       hp: 30 + master.lev * 10,
       maxHp: 30 + master.lev * 10,
-      att: 15 + master.lev * 5,
+      att: 20 + master.lev * 5,
       xp: 50 + master.lev * 5,
-      skill: '"Ikryong-Shouting"!',
-      initiate: ": Who didn't do the voting!!!",
+      skill: '"Who-Didnt-Vote -.-;"!',
+      initiate: ": Send to Woori 1002043485#$@.",
 
     }, {
       id: 5,
@@ -109,9 +109,9 @@ var TurnGame = (function() {
       nick: "SoYeon",
       hp: 100 + master.lev * 10,
       maxHp: 100 + master.lev * 10,
-      att: 1000 + master.lev * 5,
-      xp: 5000 + master.lev * 5,
-      skill: '"Auditing"!',
+      att: 100 + master.lev * 5,
+      xp: 1000 + master.lev * 5,
+      skill: '"IFRS-Shock"!',
       initiate: ": Life's like accounting. Debit, Credit, and Soju.",
 
     }, {
@@ -145,7 +145,7 @@ var TurnGame = (function() {
       att: 10 + master.lev * 5,
       xp: 100 + master.lev * 5,
       skill: '"Look at Hull page 326...!"',
-      initiate: ": You are humiliation of YFL.",
+      initiate: ": You humiliated YFL.",
 
     }, {
       id: 9,
