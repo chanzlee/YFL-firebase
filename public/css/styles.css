@@ -3,7 +3,6 @@ body {
   font-size: 7px;
 }
 form {
-  margin-top: 1%;
   margin-bottom: 1%;
 }
 button {
@@ -67,7 +66,7 @@ h1 {
 }
 
 form {
-  margin:50px 30px;
+  margin:30px 20px;
 }
 
 #game-menu, #battle-menu {
@@ -79,8 +78,9 @@ form {
 }
 
 #message {
-  margin-top: 50px;
-  padding: 5px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  padding: 3px;
 }
 
 img {
@@ -90,4 +90,9 @@ img {
   width: 75px;
   height:100px;
   margin-bottom: 3%;
+  border-radius: 7px;
+}
+
+form input{
+  width: 70px;
 }

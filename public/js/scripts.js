@@ -57,7 +57,7 @@ var TurnGame = (function() {
       att: 10 + master.lev * 5,
       xp: 30 + master.lev * 5,
       skill: '"Orange-Bong-Bong"!',
-      initiate: "how orange since I had orange...lol",
+      initiate: ": How orange since I had orange...lol",
     }, {
 
       id: 1,
@@ -97,11 +97,11 @@ var TurnGame = (function() {
       name: 'JinWon "Noni" Kim',
       nick: "Noni",
       hp: 30 + master.lev * 10,
-      maxHp: 30 + master.lev * 10,
+      maxHp: 50 + master.lev * 10,
       att: 20 + master.lev * 5,
-      xp: 50 + master.lev * 5,
+      xp: 60 + master.lev * 5,
       skill: '"Who-Didnt-Vote -.-;"!',
-      initiate: ": Send to Woori 1002043485#$@.",
+      initiate: ": Send to WooriBank 1002043485#$@.",
 
     }, {
       id: 5,
@@ -171,6 +171,7 @@ var TurnGame = (function() {
 
     }];
 
+    var monstersTemp = monsters;
     var monster = null;
     var turn = true;
     return {
@@ -230,7 +231,11 @@ var TurnGame = (function() {
       // Basic input receiver functions ///////////////////////////////////////////////
       generateMonster: function() {
         var passingVar = this;
-        monster = monsters[Math.floor(Math.random() * monsters.length)];
+        if (monstersTemp.length == 0) {
+          console.log("array refreshed");
+          monstersTemp = monsters;
+        }
+        monster = monstersTemp[Math.floor(Math.random() * monstersTemp.length)];
         monster.hp=monster.maxHp;
         $("#monster-name").html(monster.name+" ");
         $("#monster-hp").html(" HP:" + monster.hp+" ");
@@ -265,10 +270,11 @@ var TurnGame = (function() {
       },
       exit: function(input) {
         $("#save").trigger("click");
+        alert('"THANK YOU for playing!" -Chan-')
         setTimeout(function(){
           $("#message").html('"THANK YOU for playing!" -Chan Lee-');
-        }, 1000);
-        $("*").fadeOut(8000);
+        }, 500);
+        $("*").fadeOut(10000);
         $("#off").trigger("click");
         $("#music-off").trigger("click");
       },
@@ -363,7 +369,7 @@ var TurnGame = (function() {
         $("#monster-hp").html("");
         $("#monster-att").html("");
         imgArray[monster.id].slideToggle();
-        monsters = monsters.filter(mon => mon.id !== monster.id);
+        monstersTemp = monstersTemp.filter(mon => mon.id !== monster.id);
         $('#menu-button').prop("disabled",false);
         return this.toggleMenu();
         monster = {};
@@ -447,12 +453,16 @@ function Sound(src) {
     this.sound.style.display = "none";
     $("body").append(this.sound);
     this.play = function(){
+      if (this.state!="off"){
       // reset play position to zero second then play
       this.sound.currentTime = 0;
       this.sound.play();
+      }
     }
     this.stop = function(){
+      if (this.state!="off"){
       this.sound.pause();
+      }
     }
 }
 
@@ -629,6 +639,14 @@ $(document).ready(function() {
     menuSound.stop();
     battleSound.stop();
     winSound.stop();
+    spankSound.stop();
+
+    introSound.state= "off";
+    menuSound.state= "off";
+    battleSound.state= "off";
+    winSound.state= "off";
+    spankSound.state= "off";
+    gameOverSound.state= "off";
   });
 
   //Start Input event handler
