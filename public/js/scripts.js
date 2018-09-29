@@ -363,6 +363,7 @@ var TurnGame = (function() {
         $("#monster-hp").html("");
         $("#monster-att").html("");
         imgArray[monster.id].slideToggle();
+        monsters = monsters.filter(mon => mon.id !== monster.id);
         $('#menu-button').prop("disabled",false);
         return this.toggleMenu();
         monster = {};
@@ -597,7 +598,7 @@ $(document).ready(function() {
 
   $("#save").click(function() {
     if (currentUser===""){
-      alert("You are not authenticated");
+      alert("You are not authenticated, data not saved.");
       $("#save").prop("disabled",true);
     } else {
 
