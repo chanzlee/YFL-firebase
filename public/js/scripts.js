@@ -479,13 +479,8 @@ var gameOverSound = new Sound("sound/gameover.mp3");
 $(document).ready(function() {
   // Firebase portion !!!!!!!!!!!
   // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyC6GJ_MCQzmZfXXJfI-RJ2dpIO5V8S3llg",
-    authDomain: "yfl-ult-fight.firebaseapp.com",
-    databaseURL: "https://yfl-ult-fight.firebaseio.com",
-    projectId: "yfl-ult-fight",
-    storageBucket: "yfl-ult-fight.appspot.com",
-    messagingSenderId: "693209051819"
+  var firebaseConfig = {
+//     removed, but any firebase json database will work as it doesn't require any preset data.
   };
   firebase.initializeApp(config);
   var database = firebase.database();
@@ -518,25 +513,8 @@ $(document).ready(function() {
       var userInfo = data.val();
 
       if(userInfo !== null){
-        console.log("user info not null");
-        console.log(userInfo.userId);
-        console.log(userInfo.realName);
-        console.log(userInfo.lev);
         TurnGame.getInstance(userInfo).getXp();
 
-        // var master = {
-        //   userId: userInfo.userId,
-        //   realName: userInfo.realName,
-        //   name: userInfo.name,
-        //   lev: userInfo.lev,
-        //   maxHp: userInfo.maxHp,
-        //   hp: userInfo.hp,
-        //   xp: userInfo.xp,
-        //   att: userInfo.att,
-        // }
-        // console.log(master.name);
-        // console.log(master.lev);
-        // TurnGame.getInstance(master).getXp();
       alert("Welcome back "+userInfo.name+"!");
       $("#update").hide();
 
@@ -560,41 +538,7 @@ $(document).ready(function() {
   }
 
 
-  //If saved, save and load the changed data.
-  // accountRef.on("child-changed",gotData,errData);
-  //
-  // function gotData(data){
-  //   console.log(data);
-  //   var userInfo = data.val();
-  //   if(userInfo !== null){
-  //     master = {
-  //       userId: userInfo.userId,
-  //       realName: userInfo.realName,
-  //       name: userInfo.name,
-  //       lev: userInfo.lev,
-  //       maxHp: userInfo.maxHp,
-  //       hp: userInfo.hp,
-  //       xp: userInfo.xp,
-  //       att: userInfo.att
-  //     }
-  //     console.log(master.userId+master.name);
-  //
-  //     console.log(master);
-  //     TurnGame.getInstance(master.name).getXp();
-  //
-  //     if(master.hp > 0) {
-  //     $("#game-menu").show();
-  //     $("#update").hide();
-  //     $(".jumbotron").hide();
-  //     $("#start-screen").hide();
-  //     } else {
-  //       master.hp = master.maxHp;
-  //       alert("Playing as "+master.name+".");
-  //     }
-
-    // } else {
-    //   console.log("no matching");
-    // }
+ 
 
   }).catch(function(error) {
   // window.location.assign("http://yflnet.com/");
@@ -621,7 +565,6 @@ $(document).ready(function() {
       }
     }
   });
-
 
 
 
